@@ -38,6 +38,7 @@ public class Permissions extends JavaPlugin implements Listener {
         sConfig.createSConfig(this);
 
         pConfig = new PConfig();
+        pConfig.createPConfig(this);
 
         //Default Group
         GroupManager groupManager = new GroupManager(this);

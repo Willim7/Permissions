@@ -11,11 +11,10 @@ public class PConfig {
 
     private JavaPlugin plugin;
 
-    private File folder;
     private File file;
     private FileConfiguration config;
 
-    public void createPConfig(JavaPlugin plugin, String name) {
+    public void createPConfig(JavaPlugin plugin) {
 
         this.plugin = plugin;
 
@@ -23,27 +22,15 @@ public class PConfig {
             plugin.getDataFolder().mkdir();
         }
 
-        folder = new File(plugin.getDataFolder() + File.separator + "players");
-
-        if (!folder.exists()) {
-            try {
-                folder.mkdir();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        file = new File(folder, name + ".yml");
+        file = new File(plugin.getDataFolder(),"players.yml");
 
         config = YamlConfiguration.loadConfiguration(file);
 
         if (!file.exists()) {
             try {
                 file.createNewFile();
-                config.set(name + ".Prefix", "");
-                config.set(name + ".Suffix", "");
-                config.set(name + ".Permissions", "");
-                config.save(file);
+                config.set("Players", "");
+                saveConfig();
             } catch (IOException e) {
                 e.printStackTrace();
             }

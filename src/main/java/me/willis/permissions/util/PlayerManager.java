@@ -15,34 +15,43 @@ public class PlayerManager {
         this.plugin = plugin;
     }
 
+    public void createPlayerInfo(UUID uuid) {
+        if (!plugin.getpConfig().getConfig().contains("Players." + uuid.toString())) {
+            plugin.getpConfig().getConfig().set("Players." + uuid.toString() + ".Prefix", "");
+            plugin.getpConfig().getConfig().set("Players." + uuid.toString() + ".Suffix", "");
+            plugin.getpConfig().getConfig().set("Players." + uuid.toString() + ".Permissions", "");
+            plugin.getpConfig().saveConfig();
+        }
+    }
+
     public void setPrefix(UUID uuid, String prefix) {
-        plugin.getpConfig().getConfig().set(uuid.toString() + ".Prefix", prefix);
+        plugin.getpConfig().getConfig().set("Players." + uuid.toString() + ".Prefix", prefix);
         plugin.getpConfig().saveConfig();
     }
 
     public void setSuffix(UUID uuid, String suffix) {
-        plugin.getpConfig().getConfig().set(uuid.toString() + ".Suffix", suffix);
+        plugin.getpConfig().getConfig().set("Players." + uuid.toString() + ".Suffix", suffix);
         plugin.getpConfig().saveConfig();
     }
 
     public void addPermission(UUID uuid, String permission) {
 
-        List<String> permissions = plugin.getpConfig().getConfig().getStringList(uuid.toString() + ".Permissions");
+        List<String> permissions = plugin.getpConfig().getConfig().getStringList("Players." + uuid.toString() + ".Permissions");
 
         if (!permissions.contains(permission)) {
             permissions.add(permission);
-            plugin.getpConfig().getConfig().set(uuid.toString() + ".Permissions", permissions);
+            plugin.getpConfig().getConfig().set("Players." + uuid.toString() + ".Permissions", permissions);
             plugin.getpConfig().saveConfig();
         }
     }
 
     public void removePermission(UUID uuid, String permission) {
 
-        List<String> permissions = plugin.getpConfig().getConfig().getStringList(uuid.toString() + ".Permissions");
+        List<String> permissions = plugin.getpConfig().getConfig().getStringList("Players." + uuid.toString() + ".Permissions");
 
         if (permissions.contains(permission)) {
             permissions.remove(permission);
-            plugin.getpConfig().getConfig().set(uuid.toString() + ".Permissions", permissions);
+            plugin.getpConfig().getConfig().set("Players." + uuid.toString() + ".Permissions", permissions);
             plugin.getpConfig().saveConfig();
         }
     }
@@ -69,7 +78,7 @@ public class PlayerManager {
         PermissionAttachment permissionAttachment = plugin.getAttachment().get(player.getUniqueId());
 
         if (permissionAttachment != null) {
-            for (String permissions : plugin.getpConfig().getConfig().getStringList(player.getUniqueId().toString() + ".Permissions")) {
+            for (String permissions : plugin.getpConfig().getConfig().getStringList("Players." + player.getUniqueId().toString() + ".Permissions")) {
                 permissionAttachment.unsetPermission(permissions);
             }
         }
@@ -80,17 +89,17 @@ public class PlayerManager {
         PermissionAttachment permissionAttachment = plugin.getAttachment().get(uuid);
 
         if (permissionAttachment != null) {
-            for (String permissions : plugin.getpConfig().getConfig().getStringList(uuid.toString() + ".Permissions")) {
+            for (String permissions : plugin.getpConfig().getConfig().getStringList("Players." + uuid.toString() + ".Permissions")) {
                 permissionAttachment.setPermission(permissions, true);
             }
         }
     }
 
     public String getPrefix(UUID uuid) {
-        return plugin.getpConfig().getConfig().getString(uuid.toString() + ".Prefix");
+        return plugin.getpConfig().getConfig().getString("Players." + uuid.toString() + ".Prefix");
     }
 
     public String getSuffix(UUID uuid) {
-        return plugin.getpConfig().getConfig().getString(uuid.toString() + ".Suffix");
+        return plugin.getpConfig().getConfig().getString("Players." + uuid.toString() + ".Suffix");
     }
 }

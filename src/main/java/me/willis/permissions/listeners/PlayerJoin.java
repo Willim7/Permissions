@@ -30,7 +30,7 @@ public class PlayerJoin implements Listener {
         groupManager.addGroupPermissions(player);
 
         //Player
-        plugin.getpConfig().createPConfig(plugin, player.getUniqueId().toString());
+        playerManager.createPlayerInfo(player.getUniqueId());
         playerManager.addPlayerPermissions(player);
     }
 }

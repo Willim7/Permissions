@@ -84,7 +84,7 @@ public class Command implements CommandExecutor {
 
                 } else if (args.length == 5) {
 
-                    if (!groupManager.isGroupCreated(args[2])) {
+                    if (!groupManager.isGroupCreated(args[1])) {
                         sender.sendMessage(ChatColor.RED + "Error:");
                         sender.sendMessage(ChatColor.RED + "  -> The group doesn't exist");
                         return true;
@@ -94,11 +94,31 @@ public class Command implements CommandExecutor {
 
                         if (args[3].equalsIgnoreCase("prefix")) {
 
-                            groupManager.setPrefix(args[1], args[4]);
+                            if (args[4].equalsIgnoreCase("\"\"")) {
+
+                                groupManager.setPrefix(args[1], "");
+
+                            } else {
+
+                                groupManager.setPrefix(args[1], args[4]);
+                            }
+
+                            sender.sendMessage(ChatColor.GREEN + "Success:");
+                            sender.sendMessage(ChatColor.GREEN + "  -> Group prefix has been changed");
 
                         } else if (args[3].equalsIgnoreCase("suffix")) {
 
-                            groupManager.setSuffix(args[1], args[4]);
+                            if (args[4].equalsIgnoreCase("\"\"")) {
+
+                                groupManager.setSuffix(args[1], "");
+
+                            } else {
+
+                                groupManager.setSuffix(args[1], args[4]);
+                            }
+
+                            sender.sendMessage(ChatColor.GREEN + "Success:");
+                            sender.sendMessage(ChatColor.GREEN + "  -> Group suffix has been changed");
                         }
                     } else if (args[2].equalsIgnoreCase("add")) {
 

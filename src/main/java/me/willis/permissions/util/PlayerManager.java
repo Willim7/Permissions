@@ -1,6 +1,7 @@
 package me.willis.permissions.util;
 
 import me.willis.permissions.Permissions;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionAttachment;
 
@@ -34,24 +35,60 @@ public class PlayerManager {
         plugin.getpConfig().saveConfig();
     }
 
-    public void addPermission(UUID uuid, String permission) {
+    public void addPermission(Player player, String permission) {
 
-        List<String> permissions = plugin.getpConfig().getConfig().getStringList("Players." + uuid.toString() + ".Permissions");
+        PermissionAttachment attachment = plugin.getAttachment().get(player.getUniqueId());
+
+        List<String> permissions = plugin.getpConfig().getConfig().getStringList("Players." + player.getUniqueId().toString() + ".Permissions");
 
         if (!permissions.contains(permission)) {
             permissions.add(permission);
-            plugin.getpConfig().getConfig().set("Players." + uuid.toString() + ".Permissions", permissions);
+
+            plugin.getpConfig().getConfig().set("Players." + player.getUniqueId().toString() + ".Permissions", permissions);
+            plugin.getpConfig().saveConfig();
+
+            if (attachment != null) {
+                attachment.setPermission(permission, true);
+            }
+        }
+    }
+
+    public void addPermission(OfflinePlayer player, String permission) {
+
+        List<String> permissions = plugin.getpConfig().getConfig().getStringList("Players." + player.getUniqueId().toString() + ".Permissions");
+
+        if (!permissions.contains(permission)) {
+            permissions.add(permission);
+            plugin.getpConfig().getConfig().set("Players." + player.getUniqueId().toString() + ".Permissions", permissions);
             plugin.getpConfig().saveConfig();
         }
     }
 
-    public void removePermission(UUID uuid, String permission) {
+    public void removePermission(Player player, String permission) {
 
-        List<String> permissions = plugin.getpConfig().getConfig().getStringList("Players." + uuid.toString() + ".Permissions");
+        PermissionAttachment attachment = plugin.getAttachment().get(player.getUniqueId());
+
+        List<String> permissions = plugin.getpConfig().getConfig().getStringList("Players." + player.getUniqueId().toString() + ".Permissions");
 
         if (permissions.contains(permission)) {
             permissions.remove(permission);
-            plugin.getpConfig().getConfig().set("Players." + uuid.toString() + ".Permissions", permissions);
+
+            plugin.getpConfig().getConfig().set("Players." + player.getUniqueId().toString() + ".Permissions", permissions);
+            plugin.getpConfig().saveConfig();
+
+            if (attachment != null) {
+                attachment.setPermission(permission, false);
+            }
+        }
+    }
+
+    public void removePermission(OfflinePlayer player, String permission) {
+
+        List<String> permissions = plugin.getpConfig().getConfig().getStringList("Players." + player.getUniqueId().toString() + ".Permissions");
+
+        if (permissions.contains(permission)) {
+            permissions.remove(permission);
+            plugin.getpConfig().getConfig().set("Players." + player.getUniqueId().toString() + ".Permissions", permissions);
             plugin.getpConfig().saveConfig();
         }
     }

@@ -2,6 +2,9 @@ package me.willis.permissions.util;
 
 import me.willis.permissions.Permissions;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionAttachment;
 
@@ -16,7 +19,7 @@ public class GroupManager {
         this.plugin = plugin;
     }
 
-    private boolean isGroupCreated(String group) {
+    public boolean isGroupCreated(String group) {
         return plugin.getsConfig().getConfig().contains("Groups." + group);
     }
 
@@ -145,7 +148,16 @@ public class GroupManager {
         }
     }
 
-    public void updatePlayerGroups(String group, Player player) {
+    public void setPlayerGroup(String group, OfflinePlayer player) {
+        if (isGroupCreated(group)) {
+            if (plugin.getSqlConfig().hasGroup(player.getUniqueId())) {
+
+                plugin.getSqlConfig().updateGroup(player.getUniqueId(), group);
+            }
+        }
+    }
+
+    private void updatePlayerGroups(String group, Player player) {
         if (plugin.getSqlConfig().getGroup(player.getUniqueId()).equalsIgnoreCase(group)) {
 
             removeGroupPermissions(player);
@@ -156,7 +168,7 @@ public class GroupManager {
         }
     }
 
-    public void updateGroupPermissions(String group, String permission, Player player, boolean adding) {
+    private void updateGroupPermissions(String group, String permission, Player player, boolean adding) {
         if (adding) {
 
             if (plugin.getSqlConfig().getGroup(player.getUniqueId()).equalsIgnoreCase(group)) {
@@ -191,15 +203,19 @@ public class GroupManager {
         }
     }
 
-    public String getDefaultGroup() {
-        return plugin.getConfig().getString("DefaultGroup");
+
+    public void getGroups(CommandSender sender) {
+
+        sender.sendMessage(ChatColor.YELLOW + "Available Groups:");
+
+        for (String s : plugin.getsConfig().getConfig().getConfigurationSection("Groups").getKeys(false)) {
+            sender.sendMessage(ChatColor.YELLOW + "  -> " + s);
+        }
     }
 
-    public String getPrefix(UUID uuid) {
-        return plugin.getsConfig().getConfig().getString("Groups." + plugin.getSqlConfig().getGroup(uuid) + ".Prefix");
-    }
+    public String getDefaultGroup() { return plugin.getConfig().getString("DefaultGroup"); }
 
-    public String getSuffix(UUID uuid) {
-        return plugin.getsConfig().getConfig().getString("Groups." + plugin.getSqlConfig().getGroup(uuid) + ".Suffix");
-    }
+    public String getPrefix(UUID uuid) { return plugin.getsConfig().getConfig().getString("Groups." + plugin.getSqlConfig().getGroup(uuid) + ".Prefix"); }
+
+    public String getSuffix(UUID uuid) { return plugin.getsConfig().getConfig().getString("Groups." + plugin.getSqlConfig().getGroup(uuid) + ".Suffix"); }
 }

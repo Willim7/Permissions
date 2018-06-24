@@ -1,5 +1,6 @@
 package me.willis.permissions;
 
+import me.willis.permissions.command.Command;
 import me.willis.permissions.configuration.PConfig;
 import me.willis.permissions.configuration.SConfig;
 import me.willis.permissions.configuration.SQLConfig;
@@ -7,6 +8,7 @@ import me.willis.permissions.listeners.PlayerChat;
 import me.willis.permissions.listeners.PlayerJoin;
 import me.willis.permissions.listeners.PlayerQuit;
 import me.willis.permissions.util.GroupManager;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.plugin.PluginManager;
@@ -49,6 +51,17 @@ public class Permissions extends JavaPlugin implements Listener {
         pluginManager.registerEvents(new PlayerChat(this), this);
         pluginManager.registerEvents(new PlayerJoin(this), this);
         pluginManager.registerEvents(new PlayerQuit(this), this);
+
+        //Command
+        getCommand("p").setExecutor(new Command(this));
+
+        //Reloads
+        for (Player player : getServer().getOnlinePlayers()) {
+            if (player != null) {
+                PermissionAttachment permissionAttachment = player.addAttachment(this);
+                attachment.put(player.getUniqueId(), permissionAttachment);
+            }
+        }
     }
 
     @Override

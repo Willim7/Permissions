@@ -1,3 +1,13 @@
 name: Permissions
-version: 1.0.0
+version: 1.0
+description: Allow global ranks when using BungeeCord but keep permissions, prefixes, and suffixes per-server only!
+
+author: Willis
+
 main: me.willis.permissions.Permissions
+
+commands:
+    p:
+      description: Get access to all group & player commands!
+      aliases: [perm, perms, permission, permissions]
+      permission: permissions.admin

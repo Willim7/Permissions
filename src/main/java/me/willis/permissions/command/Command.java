@@ -70,6 +70,12 @@ public class Command implements CommandExecutor {
 
                     } else if (args[1].equalsIgnoreCase("delete")) {
 
+                        if (groupManager.getDefaultGroup().equalsIgnoreCase(args[2].toLowerCase())) {
+                            sender.sendMessage(ChatColor.RED + "Error:");
+                            sender.sendMessage(ChatColor.RED + "  -> You can't delete the default group");
+                            return false;
+                        }
+
                         if (!groupManager.isGroupCreated(args[2])) {
                             sender.sendMessage(ChatColor.RED + "Error:");
                             sender.sendMessage(ChatColor.RED + "  -> The group has yet to be created");
@@ -125,12 +131,19 @@ public class Command implements CommandExecutor {
                         if (args[3].equalsIgnoreCase("perm")) {
 
                             groupManager.addPermission(args[1], args[4]);
+
+                            sender.sendMessage(ChatColor.GREEN + "Success:");
+                            sender.sendMessage(ChatColor.GREEN + "  -> Group permission has been added");
+
                         }
                     } else if (args[2].equalsIgnoreCase("remove")) {
 
                         if (args[3].equalsIgnoreCase("perm")) {
 
                             groupManager.removePermission(args[1], args[4]);
+
+                            sender.sendMessage(ChatColor.GREEN + "Success:");
+                            sender.sendMessage(ChatColor.GREEN + "  -> Group permission has been removed");
 
                         }
                     }

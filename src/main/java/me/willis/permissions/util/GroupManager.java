@@ -34,13 +34,13 @@ public class GroupManager {
 
     public void deleteGroup(String group) {
         if (isGroupCreated(group)) {
-            plugin.getsConfig().getConfig().set("Groups." + group.toLowerCase(), null);
-            plugin.getsConfig().saveConfig();
+            for (Player player : Bukkit.getServer().getOnlinePlayers()) {
+                updatePlayerGroups(group, player);
+            }
         }
 
-        for (Player player : Bukkit.getServer().getOnlinePlayers()) {
-            updatePlayerGroups(group, player);
-        }
+        plugin.getsConfig().getConfig().set("Groups." + group.toLowerCase(), null);
+        plugin.getsConfig().saveConfig();
     }
 
     public void setPrefix(String group, String prefix) {
@@ -213,9 +213,15 @@ public class GroupManager {
         }
     }
 
-    public String getDefaultGroup() { return plugin.getConfig().getString("DefaultGroup"); }
+    public String getDefaultGroup() {
+        return plugin.getConfig().getString("DefaultGroup").toLowerCase();
+    }
 
-    public String getPrefix(UUID uuid) { return plugin.getsConfig().getConfig().getString("Groups." + plugin.getSqlConfig().getGroup(uuid).toLowerCase() + ".Prefix"); }
+    public String getPrefix(UUID uuid) {
+        return plugin.getsConfig().getConfig().getString("Groups." + plugin.getSqlConfig().getGroup(uuid).toLowerCase() + ".Prefix");
+    }
 
-    public String getSuffix(UUID uuid) { return plugin.getsConfig().getConfig().getString("Groups." + plugin.getSqlConfig().getGroup(uuid).toLowerCase() + ".Suffix"); }
+    public String getSuffix(UUID uuid) {
+        return plugin.getsConfig().getConfig().getString("Groups." + plugin.getSqlConfig().getGroup(uuid).toLowerCase() + ".Suffix");
+    }
 }

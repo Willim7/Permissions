@@ -58,6 +58,7 @@ public class PlayerChat implements Listener {
         format = format.replace("%displayname%", displayName);
         format = ChatColor.translateAlternateColorCodes('&', format);
         format = format.replace("%message%", message);
+        format = format.trim().replaceAll("\\s+", " ");
         event.setFormat(format);
     }
 

@@ -41,8 +41,8 @@ public class PlayerManager {
 
         List<String> permissions = plugin.getpConfig().getConfig().getStringList("Players." + player.getUniqueId().toString() + ".Permissions");
 
-        if (!permissions.contains(permission)) {
-            permissions.add(permission);
+        if (!permissions.contains(permission.toLowerCase())) {
+            permissions.add(permission.toLowerCase());
 
             plugin.getpConfig().getConfig().set("Players." + player.getUniqueId().toString() + ".Permissions", permissions);
             plugin.getpConfig().saveConfig();
@@ -57,8 +57,8 @@ public class PlayerManager {
 
         List<String> permissions = plugin.getpConfig().getConfig().getStringList("Players." + player.getUniqueId().toString() + ".Permissions");
 
-        if (!permissions.contains(permission)) {
-            permissions.add(permission);
+        if (!permissions.contains(permission.toLowerCase())) {
+            permissions.add(permission.toLowerCase());
             plugin.getpConfig().getConfig().set("Players." + player.getUniqueId().toString() + ".Permissions", permissions);
             plugin.getpConfig().saveConfig();
         }
@@ -70,8 +70,8 @@ public class PlayerManager {
 
         List<String> permissions = plugin.getpConfig().getConfig().getStringList("Players." + player.getUniqueId().toString() + ".Permissions");
 
-        if (permissions.contains(permission)) {
-            permissions.remove(permission);
+        if (permissions.contains(permission.toLowerCase())) {
+            permissions.remove(permission.toLowerCase());
 
             plugin.getpConfig().getConfig().set("Players." + player.getUniqueId().toString() + ".Permissions", permissions);
             plugin.getpConfig().saveConfig();
@@ -86,8 +86,8 @@ public class PlayerManager {
 
         List<String> permissions = plugin.getpConfig().getConfig().getStringList("Players." + player.getUniqueId().toString() + ".Permissions");
 
-        if (permissions.contains(permission)) {
-            permissions.remove(permission);
+        if (permissions.contains(permission.toLowerCase())) {
+            permissions.remove(permission.toLowerCase());
             plugin.getpConfig().getConfig().set("Players." + player.getUniqueId().toString() + ".Permissions", permissions);
             plugin.getpConfig().saveConfig();
         }

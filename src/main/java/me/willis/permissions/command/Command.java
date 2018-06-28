@@ -22,7 +22,6 @@ public class Command implements CommandExecutor {
         this.playerManager = new PlayerManager(plugin);
     }
 
-    @Override
     public boolean onCommand(CommandSender sender, org.bukkit.command.Command command, String label, String[] args) {
         if (sender.hasPermission("permissions.admin")) {
             if (args.length == 0) {

@@ -163,12 +163,6 @@ public class Command implements CommandExecutor {
 
                             OfflinePlayer offlinePlayer = Bukkit.getServer().getOfflinePlayer(args[1]);
 
-                            if (!offlinePlayer.hasPlayedBefore()) {
-                                sender.sendMessage(ChatColor.RED + "Error:");
-                                sender.sendMessage(ChatColor.RED + "  -> Player has never joined this server");
-                                return true;
-                            }
-
                             if (offlinePlayer.isOnline()) {
 
                                 Player player = Bukkit.getServer().getPlayer(args[1]);
@@ -179,6 +173,12 @@ public class Command implements CommandExecutor {
                                 sender.sendMessage(ChatColor.GREEN + "  -> Player group has been changed");
 
                             } else {
+
+                                if (!offlinePlayer.hasPlayedBefore()) {
+                                    sender.sendMessage(ChatColor.RED + "Error:");
+                                    sender.sendMessage(ChatColor.RED + "  -> Player has never joined this server");
+                                    return true;
+                                }
 
                                 groupManager.setPlayerGroup(args[4], offlinePlayer);
 
@@ -192,12 +192,6 @@ public class Command implements CommandExecutor {
 
                             OfflinePlayer offlinePlayer = Bukkit.getServer().getOfflinePlayer(args[1]);
 
-                            if (!offlinePlayer.hasPlayedBefore()) {
-                                sender.sendMessage(ChatColor.RED + "Error:");
-                                sender.sendMessage(ChatColor.RED + "  -> Player has never joined this server");
-                                return true;
-                            }
-
                             if (offlinePlayer.isOnline()) {
 
                                 Player player = Bukkit.getServer().getPlayer(args[1]);
@@ -207,6 +201,12 @@ public class Command implements CommandExecutor {
                                     playerManager.setPrefix(player.getUniqueId(), "");
 
                                 } else {
+
+                                    if (!offlinePlayer.hasPlayedBefore()) {
+                                        sender.sendMessage(ChatColor.RED + "Error:");
+                                        sender.sendMessage(ChatColor.RED + "  -> Player has never joined this server");
+                                        return true;
+                                    }
 
                                     playerManager.setPrefix(player.getUniqueId(), args[4]);
                                 }
@@ -232,12 +232,6 @@ public class Command implements CommandExecutor {
 
                             OfflinePlayer offlinePlayer = Bukkit.getServer().getOfflinePlayer(args[1]);
 
-                            if (!offlinePlayer.hasPlayedBefore()) {
-                                sender.sendMessage(ChatColor.RED + "Error:");
-                                sender.sendMessage(ChatColor.RED + "  -> Player has never joined this server");
-                                return true;
-                            }
-
                             if (offlinePlayer.isOnline()) {
 
                                 Player player = Bukkit.getServer().getPlayer(args[1]);
@@ -247,6 +241,12 @@ public class Command implements CommandExecutor {
                                     playerManager.setSuffix(player.getUniqueId(), "");
 
                                 } else {
+
+                                    if (!offlinePlayer.hasPlayedBefore()) {
+                                        sender.sendMessage(ChatColor.RED + "Error:");
+                                        sender.sendMessage(ChatColor.RED + "  -> Player has never joined this server");
+                                        return true;
+                                    }
 
                                     playerManager.setSuffix(player.getUniqueId(), args[4]);
                                 }
@@ -275,12 +275,6 @@ public class Command implements CommandExecutor {
 
                             OfflinePlayer offlinePlayer = Bukkit.getServer().getOfflinePlayer(args[1]);
 
-                            if (!offlinePlayer.hasPlayedBefore()) {
-                                sender.sendMessage(ChatColor.RED + "Error:");
-                                sender.sendMessage(ChatColor.RED + "  -> Player has never joined this server");
-                                return true;
-                            }
-
                             if (offlinePlayer.isOnline()) {
 
                                 Player player = Bukkit.getServer().getPlayer(args[1]);
@@ -291,6 +285,12 @@ public class Command implements CommandExecutor {
                                 sender.sendMessage(ChatColor.GREEN + "  -> Player permission has been added");
 
                             } else {
+
+                                if (!offlinePlayer.hasPlayedBefore()) {
+                                    sender.sendMessage(ChatColor.RED + "Error:");
+                                    sender.sendMessage(ChatColor.RED + "  -> Player has never joined this server");
+                                    return true;
+                                }
 
                                 playerManager.addPermission(offlinePlayer, args[4]);
 
@@ -304,12 +304,6 @@ public class Command implements CommandExecutor {
 
                             OfflinePlayer offlinePlayer = Bukkit.getServer().getOfflinePlayer(args[1]);
 
-                            if (!offlinePlayer.hasPlayedBefore()) {
-                                sender.sendMessage(ChatColor.RED + "Error:");
-                                sender.sendMessage(ChatColor.RED + "  -> Player has never joined this server");
-                                return true;
-                            }
-
                             if (offlinePlayer.isOnline()) {
 
                                 Player player = Bukkit.getServer().getPlayer(args[1]);
@@ -320,6 +314,12 @@ public class Command implements CommandExecutor {
                                 sender.sendMessage(ChatColor.GREEN + "  -> Player permission has been removed");
 
                             } else {
+
+                                if (!offlinePlayer.hasPlayedBefore()) {
+                                    sender.sendMessage(ChatColor.RED + "Error:");
+                                    sender.sendMessage(ChatColor.RED + "  -> Player has never joined this server");
+                                    return true;
+                                }
 
                                 playerManager.removePermission(offlinePlayer, args[4]);
 

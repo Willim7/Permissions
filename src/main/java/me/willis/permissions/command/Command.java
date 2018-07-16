@@ -45,16 +45,16 @@ public class Command implements CommandExecutor {
             }
 
             if (args.length == 1) {
-                if (args[0].equalsIgnoreCase("groups")) {
+                if (args[0].equalsIgnoreCase("groups") || (args[0].equalsIgnoreCase("gs"))) {
                     groupManager.getGroups(sender);
                     return true;
                 }
             }
 
-            if (args[0].equalsIgnoreCase("group")) {
+            if (args[0].equalsIgnoreCase("group") || (args[0].equalsIgnoreCase("g"))) {
                 if (args.length == 3) {
 
-                    if (args[1].equalsIgnoreCase("create")) {
+                    if (args[1].equalsIgnoreCase("create") || (args[1].equalsIgnoreCase("c"))) {
 
                         if (groupManager.isGroupCreated(args[2])) {
                             sender.sendMessage(ChatColor.RED + "Error:");
@@ -67,7 +67,7 @@ public class Command implements CommandExecutor {
                         sender.sendMessage(ChatColor.GREEN + "Success:");
                         sender.sendMessage(ChatColor.GREEN + "  -> Group has been created");
 
-                    } else if (args[1].equalsIgnoreCase("delete")) {
+                    } else if (args[1].equalsIgnoreCase("delete") || (args[1].equalsIgnoreCase("d"))) {
 
                         if (groupManager.getDefaultGroup().equalsIgnoreCase(args[2].toLowerCase())) {
                             sender.sendMessage(ChatColor.RED + "Error:");
@@ -95,9 +95,9 @@ public class Command implements CommandExecutor {
                         return true;
                     }
 
-                    if (args[2].equalsIgnoreCase("set")) {
+                    if (args[2].equalsIgnoreCase("set") || (args[2].equalsIgnoreCase("s"))) {
 
-                        if (args[3].equalsIgnoreCase("prefix")) {
+                        if (args[3].equalsIgnoreCase("prefix") || (args[3].equalsIgnoreCase("p"))) {
 
                             if (args[4].equalsIgnoreCase("\"\"")) {
 
@@ -111,7 +111,7 @@ public class Command implements CommandExecutor {
                             sender.sendMessage(ChatColor.GREEN + "Success:");
                             sender.sendMessage(ChatColor.GREEN + "  -> Group prefix has been changed");
 
-                        } else if (args[3].equalsIgnoreCase("suffix")) {
+                        } else if (args[3].equalsIgnoreCase("suffix") || (args[3].equalsIgnoreCase("s"))) {
 
                             if (args[4].equalsIgnoreCase("\"\"")) {
 
@@ -125,9 +125,9 @@ public class Command implements CommandExecutor {
                             sender.sendMessage(ChatColor.GREEN + "Success:");
                             sender.sendMessage(ChatColor.GREEN + "  -> Group suffix has been changed");
                         }
-                    } else if (args[2].equalsIgnoreCase("add")) {
+                    } else if (args[2].equalsIgnoreCase("add") || (args[2].equalsIgnoreCase("a"))) {
 
-                        if (args[3].equalsIgnoreCase("perm")) {
+                        if (args[3].equalsIgnoreCase("perm") || (args[3].equalsIgnoreCase("p"))) {
 
                             groupManager.addPermission(args[1], args[4]);
 
@@ -135,9 +135,9 @@ public class Command implements CommandExecutor {
                             sender.sendMessage(ChatColor.GREEN + "  -> Group permission has been added");
 
                         }
-                    } else if (args[2].equalsIgnoreCase("remove")) {
+                    } else if (args[2].equalsIgnoreCase("remove") || (args[2].equalsIgnoreCase("r"))) {
 
-                        if (args[3].equalsIgnoreCase("perm")) {
+                        if (args[3].equalsIgnoreCase("perm") || (args[3].equalsIgnoreCase("p"))) {
 
                             groupManager.removePermission(args[1], args[4]);
 
@@ -147,13 +147,13 @@ public class Command implements CommandExecutor {
                         }
                     }
                 }
-            } else if (args[0].equalsIgnoreCase("player")) {
+            } else if (args[0].equalsIgnoreCase("player") || (args[0].equalsIgnoreCase("p"))) {
 
                 if (args.length == 5) {
 
-                    if (args[2].equalsIgnoreCase("group")) {
+                    if (args[2].equalsIgnoreCase("group") || (args[2].equalsIgnoreCase("g"))) {
 
-                        if (args[3].equalsIgnoreCase("set")) {
+                        if (args[3].equalsIgnoreCase("set") || (args[3].equalsIgnoreCase("s"))) {
 
                             if (!groupManager.isGroupCreated(args[4])) {
                                 sender.sendMessage(ChatColor.RED + "Error:");
@@ -186,9 +186,9 @@ public class Command implements CommandExecutor {
                                 sender.sendMessage(ChatColor.GREEN + "  -> Player group has been changed");
                             }
                         }
-                    } else if (args[2].equalsIgnoreCase("set")) {
+                    } else if (args[2].equalsIgnoreCase("set") || (args[2].equalsIgnoreCase("s"))) {
 
-                        if (args[3].equalsIgnoreCase("prefix")) {
+                        if (args[3].equalsIgnoreCase("prefix") || (args[3].equalsIgnoreCase("p"))) {
 
                             OfflinePlayer offlinePlayer = Bukkit.getServer().getOfflinePlayer(args[1]);
 
@@ -228,7 +228,7 @@ public class Command implements CommandExecutor {
                                 sender.sendMessage(ChatColor.GREEN + "Success:");
                                 sender.sendMessage(ChatColor.GREEN + "  -> Player prefix has been changed");
                             }
-                        } else if (args[3].equalsIgnoreCase("suffix")) {
+                        } else if (args[3].equalsIgnoreCase("suffix") || (args[3].equalsIgnoreCase("s"))) {
 
                             OfflinePlayer offlinePlayer = Bukkit.getServer().getOfflinePlayer(args[1]);
 
@@ -269,9 +269,9 @@ public class Command implements CommandExecutor {
                                 sender.sendMessage(ChatColor.GREEN + "  -> Player suffix has been changed");
                             }
                         }
-                    } else if (args[2].equalsIgnoreCase("add")) {
+                    } else if (args[2].equalsIgnoreCase("add") || args[2].equalsIgnoreCase("a")) {
 
-                        if (args[3].equalsIgnoreCase("perm")) {
+                        if (args[3].equalsIgnoreCase("perm") || args[3].equalsIgnoreCase("p")) {
 
                             OfflinePlayer offlinePlayer = Bukkit.getServer().getOfflinePlayer(args[1]);
 
@@ -298,9 +298,9 @@ public class Command implements CommandExecutor {
                                 sender.sendMessage(ChatColor.GREEN + "  -> Player permission has been added");
                             }
                         }
-                    } else if (args[2].equalsIgnoreCase("remove")) {
+                    } else if (args[2].equalsIgnoreCase("remove") || args[2].equalsIgnoreCase("r")) {
 
-                        if (args[3].equalsIgnoreCase("perm")) {
+                        if (args[3].equalsIgnoreCase("perm") || (args[3].equalsIgnoreCase("p"))) {
 
                             OfflinePlayer offlinePlayer = Bukkit.getServer().getOfflinePlayer(args[1]);
 

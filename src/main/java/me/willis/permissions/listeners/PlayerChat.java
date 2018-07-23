@@ -42,23 +42,22 @@ public class PlayerChat implements Listener {
         String message = event.getMessage();
 
         if (isEmpty(playerPrefix)) {
-            format = format.replace("%prefix%", prefix);
+            format = format.replace("(PREFIX)", prefix);
         } else {
-            format = format.replace("%prefix%", playerPrefix);
+            format = format.replace("(PREFIX)", playerPrefix);
         }
 
         if (isEmpty(playerSuffix)) {
-            format = format.replace("%suffix%", suffix);
+            format = format.replace("(SUFFIX)", suffix);
         } else {
-            format = format.replace("%suffix%", playerSuffix);
+            format = format.replace("(SUFFIX)", playerSuffix);
         }
 
-        format = format.replace("%world%", world);
-        format = format.replace("%player%", name);
-        format = format.replace("%displayname%", displayName);
+        format = format.replace("(WORLD)", world);
+        format = format.replace("(PLAYER)", name);
+        format = format.replace("(DISPLAYNAME)", displayName);
+        format = format.replace("(MESSAGE)", message.replace("%", "%%"));
         format = ChatColor.translateAlternateColorCodes('&', format);
-        format = format.replace("%message%", message);
-        format = format.trim().replaceAll("\\s+", " ");
         event.setFormat(format);
     }
 

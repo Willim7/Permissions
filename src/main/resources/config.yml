@@ -32,11 +32,11 @@ DefaultGroup: "member"
 # chat to make it suit your style. (Colour Codes are supported)
 
 # Available Placeholders:
-#  | %world% - Grab the world the player is in
-#  | %player% - Grab the player's name
-#  | %displayname% - Grab the player's display name
-#  | %prefix% - Grab the player's prefix
-#  | %suffix% - Grab the player's suffix
-#  | %message% - Grab the player's message
+#  | (WORLD) - Grab the world the player is in
+#  | (PLAYER) - Grab the player's name
+#  | (DISPLAYNAME) - Grab the player's display name
+#  | (PREFIX) - Grab the player's prefix
+#  | (SUFFIX) - Grab the player's suffix
+#  | (MESSAGE) - Grab the player's message
 
-ChatFormat: "[%world%] %prefix% %player% %suffix%: %message%"
+ChatFormat: "[(WORLD)] (PREFIX) (PLAYER) (SUFFIX): (MESSAGE)"

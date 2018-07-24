@@ -58,7 +58,7 @@ public class SQLConfig {
         }
     }
 
-    public boolean hasGroup(UUID uuid) {
+    private boolean hasGroup(UUID uuid) {
         if (!isConnected()) {
             connect();
         }

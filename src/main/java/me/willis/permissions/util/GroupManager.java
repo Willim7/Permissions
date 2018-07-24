@@ -137,29 +137,23 @@ public class GroupManager {
 
     public void setPlayerGroup(String group, Player player) {
         if (isGroupCreated(group)) {
-            if (plugin.getSqlConfig().hasGroup(player.getUniqueId())) {
+            removeGroupPermissions(player);
 
-                removeGroupPermissions(player);
-
-                if (plugin.getGroup().containsKey(player.getUniqueId())) {
-                    plugin.getGroup().remove(player.getUniqueId());
-                }
-
-                plugin.getGroup().put(player.getUniqueId(), group.toLowerCase());
-
-                plugin.getSqlConfig().updateGroup(player.getUniqueId(), group.toLowerCase());
-
-                addGroupPermissions(player);
+            if (plugin.getGroup().containsKey(player.getUniqueId())) {
+                plugin.getGroup().remove(player.getUniqueId());
             }
+
+            plugin.getGroup().put(player.getUniqueId(), group.toLowerCase());
+
+            plugin.getSqlConfig().updateGroup(player.getUniqueId(), group.toLowerCase());
+
+            addGroupPermissions(player);
         }
     }
 
     public void setPlayerGroup(String group, OfflinePlayer player) {
         if (isGroupCreated(group)) {
-            if (plugin.getSqlConfig().hasGroup(player.getUniqueId())) {
-
-                plugin.getSqlConfig().updateGroup(player.getUniqueId(), group.toLowerCase());
-            }
+            plugin.getSqlConfig().updateGroup(player.getUniqueId(), group.toLowerCase());
         }
     }
 

@@ -105,7 +105,6 @@ public class SQLConfig {
         }
     }
 
-
     public String getGroup(UUID uuid) {
         if (!isConnected()) {
             connect();

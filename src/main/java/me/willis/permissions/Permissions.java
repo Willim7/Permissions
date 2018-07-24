@@ -21,6 +21,7 @@ import java.util.UUID;
 public class Permissions extends JavaPlugin implements Listener {
 
     private Map<UUID, PermissionAttachment> attachment = new HashMap<UUID, PermissionAttachment>();
+    private Map<UUID, String> group = new HashMap<UUID, String>();
 
     private SConfig sConfig;
     private PConfig pConfig;
@@ -58,8 +59,14 @@ public class Permissions extends JavaPlugin implements Listener {
         //Reloads
         for (Player player : getServer().getOnlinePlayers()) {
             if (player != null) {
+
+                //Add their group Back
+                group.put(player.getUniqueId(), sqlConfig.getGroup(player.getUniqueId()));
+
+                //Re-add permissions
                 PermissionAttachment permissionAttachment = player.addAttachment(this);
                 attachment.put(player.getUniqueId(), permissionAttachment);
+
             }
         }
     }
@@ -68,6 +75,8 @@ public class Permissions extends JavaPlugin implements Listener {
     public void onDisable() { sqlConfig.disconnect(); }
 
     public Map<UUID, PermissionAttachment> getAttachment() { return attachment; }
+
+    public Map<UUID, String> getGroup() { return group; }
 
     public SConfig getsConfig() {
         return sConfig;

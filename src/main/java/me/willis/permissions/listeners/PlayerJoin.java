@@ -27,6 +27,7 @@ public class PlayerJoin implements Listener {
 
         //Group
         plugin.getSqlConfig().setGroup(player.getUniqueId(), groupManager.getDefaultGroup());
+        plugin.getGroup().put(player.getUniqueId(), plugin.getSqlConfig().getGroup(player.getUniqueId()));
         groupManager.addGroupPermissions(player);
 
         //Player

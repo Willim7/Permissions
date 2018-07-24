@@ -101,7 +101,7 @@ public class GroupManager {
 
             plugin.getAttachment().put(player.getUniqueId(), attachment);
 
-            if (!isGroupCreated(plugin.getSqlConfig().getGroup(player.getUniqueId()))) {
+            if (!isGroupCreated(plugin.getGroup().get(player.getUniqueId()))) {
                 plugin.getSqlConfig().updateGroup(player.getUniqueId(), getDefaultGroup());
             }
 
@@ -118,7 +118,7 @@ public class GroupManager {
         PermissionAttachment permissionAttachment = plugin.getAttachment().get(player.getUniqueId());
 
         if (permissionAttachment != null) {
-            for (String permissions : plugin.getsConfig().getConfig().getStringList("Groups." + plugin.getSqlConfig().getGroup(player.getUniqueId()).toLowerCase() + ".Permissions")) {
+            for (String permissions : plugin.getsConfig().getConfig().getStringList("Groups." + plugin.getGroup().get(player.getUniqueId()).toLowerCase() + ".Permissions")) {
                 permissionAttachment.unsetPermission(permissions);
             }
         }
@@ -129,7 +129,7 @@ public class GroupManager {
         PermissionAttachment permissionAttachment = plugin.getAttachment().get(uuid);
 
         if (permissionAttachment != null) {
-            for (String permissions : plugin.getsConfig().getConfig().getStringList("Groups." + plugin.getSqlConfig().getGroup(uuid).toLowerCase() + ".Permissions")) {
+            for (String permissions : plugin.getsConfig().getConfig().getStringList("Groups." + plugin.getGroup().get(uuid).toLowerCase() + ".Permissions")) {
                 permissionAttachment.setPermission(permissions, true);
             }
         }
@@ -140,6 +140,12 @@ public class GroupManager {
             if (plugin.getSqlConfig().hasGroup(player.getUniqueId())) {
 
                 removeGroupPermissions(player);
+
+                if (plugin.getGroup().containsKey(player.getUniqueId())) {
+                    plugin.getGroup().remove(player.getUniqueId());
+                }
+
+                plugin.getGroup().put(player.getUniqueId(), group.toLowerCase());
 
                 plugin.getSqlConfig().updateGroup(player.getUniqueId(), group.toLowerCase());
 
@@ -158,7 +164,7 @@ public class GroupManager {
     }
 
     private void updatePlayerGroups(String group, Player player) {
-        if (plugin.getSqlConfig().getGroup(player.getUniqueId()).equalsIgnoreCase(group.toLowerCase())) {
+        if (plugin.getGroup().get(player.getUniqueId()).equalsIgnoreCase(group.toLowerCase())) {
 
             removeGroupPermissions(player);
 
@@ -171,7 +177,7 @@ public class GroupManager {
     private void updateGroupPermissions(String group, String permission, Player player, boolean adding) {
         if (adding) {
 
-            if (plugin.getSqlConfig().getGroup(player.getUniqueId()).toLowerCase().equalsIgnoreCase(group.toLowerCase())) {
+            if (plugin.getGroup().get(player.getUniqueId()).toLowerCase().equalsIgnoreCase(group.toLowerCase())) {
 
                 PermissionAttachment permissionAttachment = plugin.getAttachment().get(player.getUniqueId());
 
@@ -187,7 +193,7 @@ public class GroupManager {
 
         } else {
 
-            if (plugin.getSqlConfig().getGroup(player.getUniqueId()).toLowerCase().equalsIgnoreCase(group.toLowerCase())) {
+            if (plugin.getGroup().get(player.getUniqueId()).toLowerCase().equalsIgnoreCase(group.toLowerCase())) {
 
                 PermissionAttachment permissionAttachment = plugin.getAttachment().get(player.getUniqueId());
 
@@ -218,10 +224,10 @@ public class GroupManager {
     }
 
     public String getPrefix(UUID uuid) {
-        return plugin.getsConfig().getConfig().getString("Groups." + plugin.getSqlConfig().getGroup(uuid).toLowerCase() + ".Prefix");
+        return plugin.getsConfig().getConfig().getString("Groups." + plugin.getGroup().get(uuid).toLowerCase() + ".Prefix");
     }
 
     public String getSuffix(UUID uuid) {
-        return plugin.getsConfig().getConfig().getString("Groups." + plugin.getSqlConfig().getGroup(uuid).toLowerCase() + ".Suffix");
+        return plugin.getsConfig().getConfig().getString("Groups." + plugin.getGroup().get(uuid).toLowerCase() + ".Suffix");
     }
 }

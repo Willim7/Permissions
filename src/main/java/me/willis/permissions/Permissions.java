@@ -1,13 +1,13 @@
 package me.willis.permissions;
 
+import me.justrayz.rlib.RHandler;
 import me.willis.permissions.command.Command;
-import me.willis.permissions.configuration.PConfig;
-import me.willis.permissions.configuration.SConfig;
-import me.willis.permissions.configuration.SQLConfig;
 import me.willis.permissions.listeners.PlayerChat;
 import me.willis.permissions.listeners.PlayerJoin;
 import me.willis.permissions.listeners.PlayerQuit;
+import me.willis.permissions.sql.SQL;
 import me.willis.permissions.util.GroupManager;
+import me.willis.permissions.util.PlayerManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.permissions.PermissionAttachment;
@@ -23,29 +23,27 @@ public class Permissions extends JavaPlugin implements Listener {
     private Map<UUID, PermissionAttachment> attachment = new HashMap<UUID, PermissionAttachment>();
     private Map<UUID, String> group = new HashMap<UUID, String>();
 
-    private SConfig sConfig;
-    private PConfig pConfig;
-    private SQLConfig sqlConfig;
+    private GroupManager groupManager;
+    private PlayerManager playerManager;
+    private SQL sql;
 
     @Override
     public void onEnable() {
 
+        //RLIB
+        RHandler.registerHandler(this);
+
         //Configuration
         saveDefaultConfig();
 
-        sqlConfig = new SQLConfig(this);
-        sqlConfig.connect();
-        sqlConfig.createTable();
-
-        sConfig = new SConfig();
-        sConfig.createSConfig(this);
-
-        pConfig = new PConfig();
-        pConfig.createPConfig(this);
+        //SQL
+        sql = new SQL(this);
 
         //Default Group
-        GroupManager groupManager = new GroupManager(this);
+        groupManager = new GroupManager(this);
         groupManager.createGroup(groupManager.getDefaultGroup());
+
+        playerManager = new PlayerManager(this);
 
         //Listeners
         PluginManager pluginManager = getServer().getPluginManager();
@@ -61,36 +59,21 @@ public class Permissions extends JavaPlugin implements Listener {
             if (player != null) {
 
                 //Add their group Back
-                group.put(player.getUniqueId(), sqlConfig.getGroup(player.getUniqueId()));
+                sql.getGroup(player.getUniqueId()).thenAccept(s -> {
+                    group.put(player.getUniqueId(), s.toLowerCase());
+                    groupManager.addGroupPermissions(player);
+                });
 
-                //Re-add permissions
-                PermissionAttachment permissionAttachment = player.addAttachment(this);
-                attachment.put(player.getUniqueId(), permissionAttachment);
-
+                playerManager.addPlayerPermissions(player);
             }
         }
     }
-
-    @Override
-    public void onDisable() { sqlConfig.disconnect(); }
 
     public Map<UUID, PermissionAttachment> getAttachment() { return attachment; }
 
     public Map<UUID, String> getGroup() { return group; }
 
-    public SConfig getsConfig() {
-        return sConfig;
-    }
-
-    public PConfig getpConfig() { return pConfig; }
-
-    public SQLConfig getSqlConfig() {
-        return sqlConfig;
-    }
-
-    public void clear(UUID uuid) {
-        if (attachment.containsKey(uuid)) {
-            attachment.remove(uuid);
-        }
+    public SQL getSql() {
+        return sql;
     }
 }

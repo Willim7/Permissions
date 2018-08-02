@@ -1,6 +1,7 @@
 package me.willis.permissions.util;
 
 import me.willis.permissions.Permissions;
+import me.willis.permissions.configuration.Config;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -11,24 +12,25 @@ import org.bukkit.permissions.PermissionAttachment;
 import java.util.List;
 import java.util.UUID;
 
-public class GroupManager {
+public class GroupManager extends Config {
 
     private Permissions plugin;
 
     public GroupManager(Permissions plugin) {
+        super(plugin, "groups", "Groups");
         this.plugin = plugin;
     }
 
     public boolean isGroupCreated(String group) {
-        return plugin.getsConfig().getConfig().contains("Groups." + group.toLowerCase());
+        return getConfig().contains("Groups." + group.toLowerCase());
     }
 
     public void createGroup(String group) {
         if (!isGroupCreated(group)) {
-            plugin.getsConfig().getConfig().set("Groups." + group.toLowerCase() + ".Prefix", "");
-            plugin.getsConfig().getConfig().set("Groups." + group.toLowerCase() + ".Suffix", "");
-            plugin.getsConfig().getConfig().set("Groups." + group.toLowerCase() + ".Permissions", "");
-            plugin.getsConfig().saveConfig();
+            getConfig().set("Groups." + group.toLowerCase() + ".Prefix", "");
+            getConfig().set("Groups." + group.toLowerCase() + ".Suffix", "");
+            getConfig().set("Groups." + group.toLowerCase() + ".Permissions", "");
+            saveConfig();
         }
     }
 
@@ -39,33 +41,33 @@ public class GroupManager {
             }
         }
 
-        plugin.getsConfig().getConfig().set("Groups." + group.toLowerCase(), null);
-        plugin.getsConfig().saveConfig();
+        getConfig().set("Groups." + group.toLowerCase(), null);
+        saveConfig();
     }
 
     public void setPrefix(String group, String prefix) {
         if (isGroupCreated(group)) {
-            plugin.getsConfig().getConfig().set("Groups." + group.toLowerCase() + ".Prefix", prefix);
-            plugin.getsConfig().saveConfig();
+            getConfig().set("Groups." + group.toLowerCase() + ".Prefix", prefix);
+            saveConfig();
         }
     }
 
     public void setSuffix(String group, String suffix) {
         if (isGroupCreated(group)) {
-            plugin.getsConfig().getConfig().set("Groups." + group.toLowerCase() + ".Suffix", suffix);
-            plugin.getsConfig().saveConfig();
+            getConfig().set("Groups." + group.toLowerCase() + ".Suffix", suffix);
+            saveConfig();
         }
     }
 
     public void addPermission(String group, String permission) {
         if (isGroupCreated(group)) {
 
-            List<String> permissions = plugin.getsConfig().getConfig().getStringList("Groups." + group.toLowerCase() + ".Permissions");
+            List<String> permissions = getConfig().getStringList("Groups." + group.toLowerCase() + ".Permissions");
 
             if (!permissions.contains(permission.toLowerCase())) {
                 permissions.add(permission.toLowerCase());
-                plugin.getsConfig().getConfig().set("Groups." + group.toLowerCase() + ".Permissions", permissions);
-                plugin.getsConfig().saveConfig();
+                getConfig().set("Groups." + group.toLowerCase() + ".Permissions", permissions);
+                saveConfig();
             }
 
             for (Player player : Bukkit.getServer().getOnlinePlayers()) {
@@ -77,12 +79,12 @@ public class GroupManager {
     public void removePermission(String group, String permission) {
         if (isGroupCreated(group)) {
 
-            List<String> permissions = plugin.getsConfig().getConfig().getStringList("Groups." + group.toLowerCase() + ".Permissions");
+            List<String> permissions = getConfig().getStringList("Groups." + group.toLowerCase() + ".Permissions");
 
             if (permissions.contains(permission.toLowerCase())) {
                 permissions.remove(permission.toLowerCase());
-                plugin.getsConfig().getConfig().set("Groups." + group.toLowerCase() + ".Permissions", permissions);
-                plugin.getsConfig().saveConfig();
+                getConfig().set("Groups." + group.toLowerCase() + ".Permissions", permissions);
+                saveConfig();
             }
 
             for (Player player : Bukkit.getServer().getOnlinePlayers()) {
@@ -93,23 +95,27 @@ public class GroupManager {
 
     public void addGroupPermissions(Player player) {
 
+        if (!isGroupCreated(plugin.getGroup().get(player.getUniqueId()))) {
+            plugin.getSql().updateGroup(player.getUniqueId(), getDefaultGroup());
+        }
+
         PermissionAttachment permissionAttachment = plugin.getAttachment().get(player.getUniqueId());
 
         if (permissionAttachment == null) {
 
             PermissionAttachment attachment = player.addAttachment(plugin);
 
-            plugin.getAttachment().put(player.getUniqueId(), attachment);
-
-            if (!isGroupCreated(plugin.getGroup().get(player.getUniqueId()))) {
-                plugin.getSqlConfig().updateGroup(player.getUniqueId(), getDefaultGroup());
+            for (String permissions : getConfig().getStringList("Groups." + plugin.getGroup().get(player.getUniqueId()).toLowerCase() + ".Permissions")) {
+                attachment.setPermission(permissions, true);
             }
 
-            permissionSetter(player.getUniqueId());
+            plugin.getAttachment().put(player.getUniqueId(), attachment);
 
         } else {
 
-            permissionSetter(player.getUniqueId());
+            for (String permissions : getConfig().getStringList("Groups." + plugin.getGroup().get(player.getUniqueId()).toLowerCase() + ".Permissions")) {
+                permissionAttachment.setPermission(permissions, true);
+            }
         }
     }
 
@@ -118,19 +124,8 @@ public class GroupManager {
         PermissionAttachment permissionAttachment = plugin.getAttachment().get(player.getUniqueId());
 
         if (permissionAttachment != null) {
-            for (String permissions : plugin.getsConfig().getConfig().getStringList("Groups." + plugin.getGroup().get(player.getUniqueId()).toLowerCase() + ".Permissions")) {
+            for (String permissions : getConfig().getStringList("Groups." + plugin.getGroup().get(player.getUniqueId()).toLowerCase() + ".Permissions")) {
                 permissionAttachment.unsetPermission(permissions);
-            }
-        }
-    }
-
-    private void permissionSetter(UUID uuid) {
-
-        PermissionAttachment permissionAttachment = plugin.getAttachment().get(uuid);
-
-        if (permissionAttachment != null) {
-            for (String permissions : plugin.getsConfig().getConfig().getStringList("Groups." + plugin.getGroup().get(uuid).toLowerCase() + ".Permissions")) {
-                permissionAttachment.setPermission(permissions, true);
             }
         }
     }
@@ -145,7 +140,7 @@ public class GroupManager {
 
             plugin.getGroup().put(player.getUniqueId(), group.toLowerCase());
 
-            plugin.getSqlConfig().updateGroup(player.getUniqueId(), group.toLowerCase());
+            plugin.getSql().updateGroup(player.getUniqueId(), group.toLowerCase());
 
             addGroupPermissions(player);
         }
@@ -153,7 +148,7 @@ public class GroupManager {
 
     public void setPlayerGroup(String group, OfflinePlayer player) {
         if (isGroupCreated(group)) {
-            plugin.getSqlConfig().updateGroup(player.getUniqueId(), group.toLowerCase());
+            plugin.getSql().updateGroup(player.getUniqueId(), group.toLowerCase());
         }
     }
 
@@ -162,7 +157,7 @@ public class GroupManager {
 
             removeGroupPermissions(player);
 
-            plugin.getSqlConfig().updateGroup(player.getUniqueId(), getDefaultGroup());
+            plugin.getSql().updateGroup(player.getUniqueId(), getDefaultGroup());
 
             addGroupPermissions(player);
         }
@@ -208,7 +203,7 @@ public class GroupManager {
 
         sender.sendMessage(ChatColor.YELLOW + "Available Groups:");
 
-        for (String s : plugin.getsConfig().getConfig().getConfigurationSection("Groups").getKeys(false)) {
+        for (String s : getConfig().getConfigurationSection("Groups").getKeys(false)) {
             sender.sendMessage(ChatColor.YELLOW + "  -> " + s.toLowerCase());
         }
     }
@@ -218,10 +213,10 @@ public class GroupManager {
     }
 
     public String getPrefix(UUID uuid) {
-        return plugin.getsConfig().getConfig().getString("Groups." + plugin.getGroup().get(uuid).toLowerCase() + ".Prefix");
+        return getConfig().getString("Groups." + plugin.getGroup().get(uuid).toLowerCase() + ".Prefix");
     }
 
     public String getSuffix(UUID uuid) {
-        return plugin.getsConfig().getConfig().getString("Groups." + plugin.getGroup().get(uuid).toLowerCase() + ".Suffix");
+        return getConfig().getString("Groups." + plugin.getGroup().get(uuid).toLowerCase() + ".Suffix");
     }
 }

@@ -7,29 +7,32 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 import java.io.IOException;
 
-public class SConfig {
+public class Config {
 
     private JavaPlugin plugin;
 
     private File file;
     private FileConfiguration config;
 
-    public void createSConfig(JavaPlugin plugin) {
+    private String configName;
+
+    public Config(JavaPlugin plugin, String name, String defaultStart) {
 
         this.plugin = plugin;
+        this.configName = name;
 
         if (!plugin.getDataFolder().exists()) {
             plugin.getDataFolder().mkdir();
         }
 
-        file = new File(plugin.getDataFolder(), "groups.yml");
+        file = new File(plugin.getDataFolder(), name + ".yml");
 
         config = YamlConfiguration.loadConfiguration(file);
 
         if (!file.exists()) {
             try {
                 file.createNewFile();
-                config.set("Groups", "");
+                config.set(defaultStart, "");
                 config.save(file);
             } catch (IOException e) {
                 e.printStackTrace();

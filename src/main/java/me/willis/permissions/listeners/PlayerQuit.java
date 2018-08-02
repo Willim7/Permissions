@@ -31,8 +31,8 @@ public class PlayerQuit implements Listener {
         //Player
         playerManager.removePlayerPermissions(player);
 
-        //Attachment
-        plugin.clear(player.getUniqueId());
+        //Attachment/Group
+        plugin.getGroup().remove(player.getUniqueId());
+        plugin.getAttachment().remove(player.getUniqueId());
     }
-
 }

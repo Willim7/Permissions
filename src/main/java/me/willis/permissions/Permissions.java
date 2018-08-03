@@ -73,6 +73,14 @@ public class Permissions extends JavaPlugin implements Listener {
 
     public Map<UUID, String> getGroup() { return group; }
 
+    public GroupManager getGroupManager() {
+        return groupManager;
+    }
+
+    public PlayerManager getPlayerManager() {
+        return playerManager;
+    }
+
     public SQL getSql() {
         return sql;
     }

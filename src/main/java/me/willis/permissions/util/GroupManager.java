@@ -105,11 +105,11 @@ public class GroupManager extends Config {
 
             PermissionAttachment attachment = player.addAttachment(plugin);
 
-            for (String permissions : getConfig().getStringList("Groups." + plugin.getGroup().get(player.getUniqueId()).toLowerCase() + ".Permissions")) {
-                attachment.setPermission(permissions, true);
-            }
-
             plugin.getAttachment().put(player.getUniqueId(), attachment);
+
+            for (String permissions : getConfig().getStringList("Groups." + plugin.getGroup().get(player.getUniqueId()).toLowerCase() + ".Permissions")) {
+                permissionAttachment.setPermission(permissions, true);
+            }
 
         } else {
 

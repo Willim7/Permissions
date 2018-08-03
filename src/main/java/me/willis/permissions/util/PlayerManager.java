@@ -45,13 +45,12 @@ public class PlayerManager extends Config {
 
         if (!permissions.contains(permission.toLowerCase())) {
             permissions.add(permission.toLowerCase());
-
             getConfig().set("Players." + player.getUniqueId().toString() + ".Permissions", permissions);
             saveConfig();
+        }
 
-            if (attachment != null) {
-                attachment.setPermission(permission, true);
-            }
+        if (attachment != null) {
+            attachment.setPermission(permission, true);
         }
     }
 
@@ -74,13 +73,12 @@ public class PlayerManager extends Config {
 
         if (permissions.contains(permission.toLowerCase())) {
             permissions.remove(permission.toLowerCase());
-
             getConfig().set("Players." + player.getUniqueId().toString() + ".Permissions", permissions);
             saveConfig();
+        }
 
-            if (attachment != null) {
-                attachment.setPermission(permission, false);
-            }
+        if (attachment != null) {
+            attachment.setPermission(permission, false);
         }
     }
 
@@ -103,12 +101,11 @@ public class PlayerManager extends Config {
 
             PermissionAttachment attachment = player.addAttachment(plugin);
 
+            plugin.getAttachment().put(player.getUniqueId(), attachment);
+
             for (String permissions : getConfig().getStringList("Players." + player.getUniqueId().toString() + ".Permissions")) {
 
-                attachment.setPermission(permissions, true);
-
-                plugin.getAttachment().put(player.getUniqueId(), attachment);
-
+                permissionAttachment.setPermission(permissions, true);
             }
         } else {
             for (String permissions : getConfig().getStringList("Players." + player.getUniqueId().toString() + ".Permissions")) {

@@ -1,0 +1,4 @@
+#Notes
+
+# Bugs
+-> When setting prefix it doesn't update in chat until a reload occurs, I am guessing the same thing happens when it comes to player permissions..

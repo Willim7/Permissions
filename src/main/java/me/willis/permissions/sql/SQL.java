@@ -3,18 +3,17 @@ package me.willis.permissions.sql;
 import me.justrayz.rlib.datamanagement.database.DatabaseType;
 import me.justrayz.rlib.datamanagement.database.RDatabaseManager;
 import me.willis.permissions.Permissions;
-import me.willis.permissions.util.GroupManager;
 
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 public class SQL extends RDatabaseManager {
 
-    private GroupManager groupManager;
+    private Permissions plugin;
 
     public SQL(Permissions plugin) {
         super(plugin.getConfig().getString("Host") + ":" + plugin.getConfig().getString("Port") + "/" + plugin.getConfig().getString("Database"), DatabaseType.MYSQL, plugin.getConfig().getString("Username"), plugin.getConfig().getString("Password"));
-        this.groupManager = new GroupManager(plugin);
+        this.plugin = plugin;
     }
 
     @Override
@@ -45,7 +44,7 @@ public class SQL extends RDatabaseManager {
             if (!rows.isEmpty()) {
                 return (String) rows.get(0).get("RANK");
             } else {
-                return groupManager.getDefaultGroup();
+                return plugin.getGroupManager().getDefaultGroup();
             }
         });
     }

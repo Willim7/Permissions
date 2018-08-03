@@ -2,6 +2,8 @@ package me.willis.permissions;
 
 import me.justrayz.rlib.RHandler;
 import me.willis.permissions.command.Command;
+import me.willis.permissions.configuration.GConfig;
+import me.willis.permissions.configuration.PConfig;
 import me.willis.permissions.listeners.PlayerChat;
 import me.willis.permissions.listeners.PlayerJoin;
 import me.willis.permissions.listeners.PlayerQuit;
@@ -23,9 +25,12 @@ public class Permissions extends JavaPlugin implements Listener {
     private Map<UUID, PermissionAttachment> attachment = new HashMap<UUID, PermissionAttachment>();
     private Map<UUID, String> group = new HashMap<UUID, String>();
 
+    private SQL sql;
+    private GConfig gConfig;
+    private PConfig pConfig;
+
     private GroupManager groupManager;
     private PlayerManager playerManager;
-    private SQL sql;
 
     @Override
     public void onEnable() {
@@ -35,6 +40,9 @@ public class Permissions extends JavaPlugin implements Listener {
 
         //Configuration
         saveDefaultConfig();
+
+        gConfig = new GConfig(this, "groups", "Groups");
+        pConfig = new PConfig(this, "players", "Players");
 
         //SQL
         sql = new SQL(this);
@@ -73,15 +81,23 @@ public class Permissions extends JavaPlugin implements Listener {
 
     public Map<UUID, String> getGroup() { return group; }
 
+    public SQL getSql() {
+        return sql;
+    }
+
+    public GConfig getgConfig() {
+        return gConfig;
+    }
+
+    public PConfig getpConfig() {
+        return pConfig;
+    }
+
     public GroupManager getGroupManager() {
         return groupManager;
     }
 
     public PlayerManager getPlayerManager() {
         return playerManager;
-    }
-
-    public SQL getSql() {
-        return sql;
     }
 }

@@ -7,7 +7,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 import java.io.IOException;
 
-public class Config {
+public class PConfig {
 
     private JavaPlugin plugin;
 
@@ -16,7 +16,7 @@ public class Config {
 
     private String configName;
 
-    public Config(JavaPlugin plugin, String name, String defaultStart) {
+    public PConfig(JavaPlugin plugin, String name, String defaultStart) {
 
         this.plugin = plugin;
         this.configName = name;

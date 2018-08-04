@@ -28,8 +28,8 @@ public class SQL extends RDatabaseManager {
     }
 
     public void setGroup(UUID uuid, String group) {
-        hasGroup(uuid).thenAccept(ok -> {
-            if (!ok) {
+        hasGroup(uuid).thenAccept(success -> {
+            if (!success) {
                 this.queryAsync("INSERT INTO players (UUID,RANK) VALUES (?,?)", uuid.toString(), group.toLowerCase());
             }
         });

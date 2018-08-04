@@ -29,6 +29,7 @@ public class GroupManager {
             plugin.getgConfig().getConfig().set("Groups." + group.toLowerCase() + ".Suffix", "");
             plugin.getgConfig().getConfig().set("Groups." + group.toLowerCase() + ".Permissions", "");
             plugin.getgConfig().saveConfig();
+            plugin.getSyncSQL().addGroup(group);
         }
     }
 
@@ -41,6 +42,7 @@ public class GroupManager {
 
         plugin.getgConfig().getConfig().set("Groups." + group.toLowerCase(), null);
         plugin.getgConfig().saveConfig();
+        plugin.getSyncSQL().removeGroup(group);
     }
 
     public void setPrefix(String group, String prefix) {
@@ -152,6 +154,17 @@ public class GroupManager {
 
     private void updatePlayerGroups(String group, Player player) {
         if (plugin.getGroup().get(player.getUniqueId()).equalsIgnoreCase(group.toLowerCase())) {
+
+            removeGroupPermissions(player);
+
+            plugin.getSql().updateGroup(player.getUniqueId(), getDefaultGroup());
+
+            addGroupPermissions(player);
+        }
+    }
+
+    public void updatePlayerGroupsGlobally(Player player) {
+        if (!isGroupCreated(plugin.getGroup().get(player.getUniqueId()))) {
 
             removeGroupPermissions(player);
 

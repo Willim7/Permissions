@@ -37,11 +37,11 @@ UpdateTime: 60
 # chat to make it suit your style. (Colour Codes are supported)
 
 # Available Placeholders:
-#  | (WORLD) - Grab the world the player is in
-#  | (PLAYER) - Grab the player's name
-#  | (DISPLAYNAME) - Grab the player's display name
-#  | (PREFIX) - Grab the player's prefix
-#  | (SUFFIX) - Grab the player's suffix
-#  | (MESSAGE) - Grab the player's message
+#  | ${WORLD} - Grab the world the player is in
+#  | ${PLAYER} - Grab the player's name
+#  | ${DISPLAYNAME} - Grab the player's display name
+#  | ${PREFIX} - Grab the player's prefix
+#  | ${SUFFIX} - Grab the player's suffix
+#  | ${MESSAGE} - Grab the player's message
 
-ChatFormat: "[(WORLD)] (PREFIX) (PLAYER) (SUFFIX): (MESSAGE)"
+ChatFormat: '[${WORLD}] ${PREFIX} ${PLAYER} ${SUFFIX}: ${MESSAGE}'

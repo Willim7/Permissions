@@ -1,11 +1,15 @@
 package me.willis.permissions.listeners;
 
+import me.justrayz.rlib.chat.ArgumentFormatter;
 import me.willis.permissions.Permissions;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class PlayerChat implements Listener {
 
@@ -20,42 +24,29 @@ public class PlayerChat implements Listener {
 
         Player player = event.getPlayer();
 
-        String format = plugin.getConfig().getString("ChatFormat");
+        String chatFormat = plugin.getConfig().getString("ChatFormat");
 
-        String world = player.getWorld().getName();
+        Map<String, Object> keys = new HashMap<>();
+        keys.put("WORLD", player.getWorld().getName());
+        keys.put("PLAYER", player.getName());
+        keys.put("DISPLAYNAME", player.getDisplayName());
 
-        String name = player.getName();
-        String displayName = player.getDisplayName();
-
-        String prefix = plugin.getGroupManager().getPrefix(player.getUniqueId());
-        String suffix = plugin.getGroupManager().getSuffix(player.getUniqueId());
-
-        String playerPrefix = plugin.getPlayerManager().getPrefix(player.getUniqueId());
-        String playerSuffix = plugin.getPlayerManager().getSuffix(player.getUniqueId());
-
-        String message = event.getMessage();
-
-        if (isEmpty(playerPrefix)) {
-            format = format.replace("(PREFIX)", prefix);
+        if (plugin.getPlayerManager().getPrefix(player.getUniqueId()).equalsIgnoreCase("")) {
+            keys.put("PREFIX", plugin.getGroupManager().getPrefix(player.getUniqueId()));
         } else {
-            format = format.replace("(PREFIX)", playerPrefix);
+            keys.put("PREFIX", plugin.getPlayerManager().getPrefix(player.getUniqueId()));
         }
 
-        if (isEmpty(playerSuffix)) {
-            format = format.replace("(SUFFIX)", suffix);
+        if (plugin.getPlayerManager().getSuffix(player.getUniqueId()).equalsIgnoreCase("")) {
+            keys.put("SUFFIX", plugin.getGroupManager().getPrefix(player.getUniqueId()));
         } else {
-            format = format.replace("(SUFFIX)", playerSuffix);
+            keys.put("SUFFIX", plugin.getPlayerManager().getPrefix(player.getUniqueId()));
         }
 
-        format = format.replace("(WORLD)", world);
-        format = format.replace("(PLAYER)", name);
-        format = format.replace("(DISPLAYNAME)", displayName);
-        format = format.replace("(MESSAGE)", message.replace("%", "%%"));
-        format = ChatColor.translateAlternateColorCodes('&', format);
-        event.setFormat(format);
-    }
+        keys.put("MESSAGE", event.getMessage());
 
-    private boolean isEmpty(String input) {
-        return input == null || input.isEmpty();
+        ArgumentFormatter argumentFormatter = new ArgumentFormatter(chatFormat, keys);
+
+        event.setFormat(ChatColor.translateAlternateColorCodes('&', argumentFormatter.format()));
     }
 }

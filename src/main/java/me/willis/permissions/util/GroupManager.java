@@ -95,10 +95,6 @@ public class GroupManager {
 
     public void addGroupPermissions(Player player) {
 
-        if (!isGroupCreated(plugin.getGroup().get(player.getUniqueId()))) {
-            plugin.getSql().updateGroup(player.getUniqueId(), getDefaultGroup());
-        }
-
         PermissionAttachment permissionAttachment = plugin.getAttachment().get(player.getUniqueId());
 
         if (permissionAttachment == null) {
@@ -163,15 +159,30 @@ public class GroupManager {
         }
     }
 
-    public void updatePlayerGroupsGlobally(Player player) {
-        if (!isGroupCreated(plugin.getGroup().get(player.getUniqueId()))) {
+    public void updateIfGroupDeleted(Player player) {
+        if (plugin.getGroup().containsKey(player.getUniqueId())) {
+            if (!isGroupCreated(plugin.getGroup().get(player.getUniqueId()))) {
 
-            removeGroupPermissions(player);
+                removeGroupPermissions(player);
 
-            plugin.getSql().updateGroup(player.getUniqueId(), getDefaultGroup());
+                plugin.getSql().updateGroup(player.getUniqueId(), getDefaultGroup());
 
-            addGroupPermissions(player);
+                addGroupPermissions(player);
+            }
         }
+    }
+
+    public void updateIfGroupChanged(Player player) {
+        plugin.getSql().getGroup(player.getUniqueId()).thenAccept(s -> {
+            if (plugin.getGroup().containsKey(player.getUniqueId())) {
+                if (!plugin.getGroup().get(player.getUniqueId()).equalsIgnoreCase(s)) {
+                    removeGroupPermissions(player);
+                    plugin.getGroup().remove(player.getUniqueId());
+                    plugin.getGroup().put(player.getUniqueId(), s.toLowerCase());
+                    addGroupPermissions(player);
+                }
+            }
+        });
     }
 
     private void updateGroupPermissions(String group, String permission, Player player, boolean adding) {

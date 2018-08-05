@@ -51,10 +51,7 @@ public class Permissions extends JavaPlugin implements Listener {
         sql = new SQL(this);
         syncSQL = new SyncSQL(this);
 
-        //Default Group
-        groupManager = new GroupManager(this);
-        groupManager.createGroup(groupManager.getDefaultGroup());
-
+        //Player Manager
         playerManager = new PlayerManager(this);
 
         //Listeners
@@ -65,6 +62,10 @@ public class Permissions extends JavaPlugin implements Listener {
 
         //Command
         getCommand("p").setExecutor(new Command(this));
+
+        //Default Group
+        groupManager = new GroupManager(this);
+        groupManager.createGroup(groupManager.getDefaultGroup());
 
         //Reloads
         for (Player player : getServer().getOnlinePlayers()) {
@@ -84,11 +85,26 @@ public class Permissions extends JavaPlugin implements Listener {
         new BukkitRunnable() {
             @Override
             public void run() {
+
                 syncSQL.syncGroups();
 
                 for (Player player : getServer().getOnlinePlayers()) {
                     if (player != null) {
-                        groupManager.updatePlayerGroupsGlobally(player);
+                        groupManager.updateIfGroupDeleted(player);
+                    }
+                }
+            }
+        }.runTaskTimer(this, 0, getConfig().getInt("UpdateTime") * 20);
+
+        //Global group change
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+
+                for (Player player : getServer().getOnlinePlayers()) {
+
+                    if (player != null) {
+                        groupManager.updateIfGroupChanged(player);
                     }
                 }
             }
@@ -99,25 +115,15 @@ public class Permissions extends JavaPlugin implements Listener {
 
     public Map<UUID, String> getGroup() { return group; }
 
-    public SQL getSql() {
-        return sql;
-    }
+    public SQL getSql() { return sql; }
 
     public SyncSQL getSyncSQL() { return syncSQL; }
 
-    public GConfig getgConfig() {
-        return gConfig;
-    }
+    public GConfig getgConfig() { return gConfig; }
 
-    public PConfig getpConfig() {
-        return pConfig;
-    }
+    public PConfig getpConfig() { return pConfig; }
 
-    public GroupManager getGroupManager() {
-        return groupManager;
-    }
+    public GroupManager getGroupManager() { return groupManager; }
 
-    public PlayerManager getPlayerManager() {
-        return playerManager;
-    }
+    public PlayerManager getPlayerManager() { return playerManager; }
 }

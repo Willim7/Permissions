@@ -1,7 +1,6 @@
 package me.willis.permissions.util;
 
 import me.willis.permissions.Permissions;
-import me.willis.permissions.configuration.GConfig;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionAttachment;
@@ -37,19 +36,21 @@ public class PlayerManager {
     }
 
     public void addPermission(Player player, String permission) {
+        if (!player.isOp()) {
 
-        PermissionAttachment attachment = plugin.getAttachment().get(player.getUniqueId());
+            PermissionAttachment attachment = plugin.getAttachment().get(player.getUniqueId());
 
-        List<String> permissions = plugin.getpConfig().getConfig().getStringList("Players." + player.getUniqueId().toString() + ".Permissions");
+            List<String> permissions = plugin.getpConfig().getConfig().getStringList("Players." + player.getUniqueId().toString() + ".Permissions");
 
-        if (!permissions.contains(permission.toLowerCase())) {
-            permissions.add(permission.toLowerCase());
-            plugin.getpConfig().getConfig().set("Players." + player.getUniqueId().toString() + ".Permissions", permissions);
-            plugin.getpConfig().saveConfig();
-        }
+            if (!permissions.contains(permission.toLowerCase())) {
+                permissions.add(permission.toLowerCase());
+                plugin.getpConfig().getConfig().set("Players." + player.getUniqueId().toString() + ".Permissions", permissions);
+                plugin.getpConfig().saveConfig();
+            }
 
-        if (attachment != null) {
-            attachment.setPermission(permission, true);
+            if (attachment != null) {
+                attachment.setPermission(permission, true);
+            }
         }
     }
 
@@ -93,22 +94,24 @@ public class PlayerManager {
     }
 
     public void addPlayerPermissions(Player player) {
+        if (!player.isOp()) {
 
-        PermissionAttachment permissionAttachment = plugin.getAttachment().get(player.getUniqueId());
+            PermissionAttachment permissionAttachment = plugin.getAttachment().get(player.getUniqueId());
 
-        if (permissionAttachment == null) {
+            if (permissionAttachment == null) {
 
-            PermissionAttachment attachment = player.addAttachment(plugin);
+                PermissionAttachment attachment = player.addAttachment(plugin);
 
-            plugin.getAttachment().put(player.getUniqueId(), attachment);
+                plugin.getAttachment().put(player.getUniqueId(), attachment);
 
-            for (String permissions : plugin.getpConfig().getConfig().getStringList("Players." + player.getUniqueId().toString() + ".Permissions")) {
+                for (String permissions : plugin.getpConfig().getConfig().getStringList("Players." + player.getUniqueId().toString() + ".Permissions")) {
 
-                permissionAttachment.setPermission(permissions, true);
-            }
-        } else {
-            for (String permissions : plugin.getpConfig().getConfig().getStringList("Players." + player.getUniqueId().toString() + ".Permissions")) {
-                permissionAttachment.setPermission(permissions, true);
+                    permissionAttachment.setPermission(permissions, true);
+                }
+            } else {
+                for (String permissions : plugin.getpConfig().getConfig().getStringList("Players." + player.getUniqueId().toString() + ".Permissions")) {
+                    permissionAttachment.setPermission(permissions, true);
+                }
             }
         }
     }

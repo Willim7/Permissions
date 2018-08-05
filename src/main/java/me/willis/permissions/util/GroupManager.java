@@ -94,34 +94,38 @@ public class GroupManager {
     }
 
     public void addGroupPermissions(Player player) {
+        if (!player.isOp()) {
 
-        PermissionAttachment permissionAttachment = plugin.getAttachment().get(player.getUniqueId());
+            PermissionAttachment permissionAttachment = plugin.getAttachment().get(player.getUniqueId());
 
-        if (permissionAttachment == null) {
+            if (permissionAttachment == null) {
 
-            PermissionAttachment attachment = player.addAttachment(plugin);
+                PermissionAttachment attachment = player.addAttachment(plugin);
 
-            plugin.getAttachment().put(player.getUniqueId(), attachment);
+                plugin.getAttachment().put(player.getUniqueId(), attachment);
 
-            for (String permissions : plugin.getgConfig().getConfig().getStringList("Groups." + plugin.getGroup().get(player.getUniqueId()).toLowerCase() + ".Permissions")) {
-                permissionAttachment.setPermission(permissions, true);
-            }
+                for (String permissions : plugin.getgConfig().getConfig().getStringList("Groups." + plugin.getGroup().get(player.getUniqueId()).toLowerCase() + ".Permissions")) {
+                    permissionAttachment.setPermission(permissions, true);
+                }
 
-        } else {
+            } else {
 
-            for (String permissions : plugin.getgConfig().getConfig().getStringList("Groups." + plugin.getGroup().get(player.getUniqueId()).toLowerCase() + ".Permissions")) {
-                permissionAttachment.setPermission(permissions, true);
+                for (String permissions : plugin.getgConfig().getConfig().getStringList("Groups." + plugin.getGroup().get(player.getUniqueId()).toLowerCase() + ".Permissions")) {
+                    permissionAttachment.setPermission(permissions, true);
+                }
             }
         }
     }
 
     public void removeGroupPermissions(Player player) {
+        if (!player.isOp()) {
 
-        PermissionAttachment permissionAttachment = plugin.getAttachment().get(player.getUniqueId());
+            PermissionAttachment permissionAttachment = plugin.getAttachment().get(player.getUniqueId());
 
-        if (permissionAttachment != null) {
-            for (String permissions : plugin.getgConfig().getConfig().getStringList("Groups." + plugin.getGroup().get(player.getUniqueId()).toLowerCase() + ".Permissions")) {
-                permissionAttachment.unsetPermission(permissions);
+            if (permissionAttachment != null) {
+                for (String permissions : plugin.getgConfig().getConfig().getStringList("Groups." + plugin.getGroup().get(player.getUniqueId()).toLowerCase() + ".Permissions")) {
+                    permissionAttachment.unsetPermission(permissions);
+                }
             }
         }
     }
@@ -186,35 +190,38 @@ public class GroupManager {
     }
 
     private void updateGroupPermissions(String group, String permission, Player player, boolean adding) {
-        if (adding) {
+        if (!player.isOp()) {
 
-            if (plugin.getGroup().get(player.getUniqueId()).toLowerCase().equalsIgnoreCase(group.toLowerCase())) {
+            if (adding) {
 
-                PermissionAttachment permissionAttachment = plugin.getAttachment().get(player.getUniqueId());
+                if (plugin.getGroup().get(player.getUniqueId()).toLowerCase().equalsIgnoreCase(group.toLowerCase())) {
 
-                if (permissionAttachment != null) {
+                    PermissionAttachment permissionAttachment = plugin.getAttachment().get(player.getUniqueId());
 
-                    permissionAttachment.setPermission(permission, true);
+                    if (permissionAttachment != null) {
 
-                } else {
+                        permissionAttachment.setPermission(permission, true);
 
-                    addGroupPermissions(player);
+                    } else {
+
+                        addGroupPermissions(player);
+                    }
                 }
-            }
 
-        } else {
+            } else {
 
-            if (plugin.getGroup().get(player.getUniqueId()).toLowerCase().equalsIgnoreCase(group.toLowerCase())) {
+                if (plugin.getGroup().get(player.getUniqueId()).toLowerCase().equalsIgnoreCase(group.toLowerCase())) {
 
-                PermissionAttachment permissionAttachment = plugin.getAttachment().get(player.getUniqueId());
+                    PermissionAttachment permissionAttachment = plugin.getAttachment().get(player.getUniqueId());
 
-                if (permission != null) {
+                    if (permission != null) {
 
-                    permissionAttachment.setPermission(permission, false);
+                        permissionAttachment.setPermission(permission, false);
 
-                } else {
+                    } else {
 
-                    addGroupPermissions(player);
+                        addGroupPermissions(player);
+                    }
                 }
             }
         }

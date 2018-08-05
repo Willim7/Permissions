@@ -24,29 +24,32 @@ public class PlayerChat implements Listener {
 
         Player player = event.getPlayer();
 
-        String chatFormat = plugin.getConfig().getString("ChatFormat");
+        if (plugin.getGroup().containsKey(player.getUniqueId())) {
 
-        Map<String, Object> keys = new HashMap<>();
-        keys.put("WORLD", player.getWorld().getName());
-        keys.put("PLAYER", player.getName());
-        keys.put("DISPLAYNAME", player.getDisplayName());
+            String chatFormat = plugin.getConfig().getString("ChatFormat");
 
-        if (plugin.getPlayerManager().getPrefix(player.getUniqueId()).equalsIgnoreCase("")) {
-            keys.put("PREFIX", plugin.getGroupManager().getPrefix(player.getUniqueId()));
-        } else {
-            keys.put("PREFIX", plugin.getPlayerManager().getPrefix(player.getUniqueId()));
+            Map<String, Object> keys = new HashMap<>();
+            keys.put("WORLD", player.getWorld().getName());
+            keys.put("PLAYER", player.getName());
+            keys.put("DISPLAYNAME", player.getDisplayName());
+
+            if (plugin.getPlayerManager().getPrefix(player.getUniqueId()).equalsIgnoreCase("")) {
+                keys.put("PREFIX", plugin.getGroupManager().getPrefix(player.getUniqueId()));
+            } else {
+                keys.put("PREFIX", plugin.getPlayerManager().getPrefix(player.getUniqueId()));
+            }
+
+            if (plugin.getPlayerManager().getSuffix(player.getUniqueId()).equalsIgnoreCase("")) {
+                keys.put("SUFFIX", plugin.getGroupManager().getPrefix(player.getUniqueId()));
+            } else {
+                keys.put("SUFFIX", plugin.getPlayerManager().getPrefix(player.getUniqueId()));
+            }
+
+            keys.put("MESSAGE", event.getMessage());
+
+            ArgumentFormatter argumentFormatter = new ArgumentFormatter(chatFormat, keys);
+
+            event.setFormat(ChatColor.translateAlternateColorCodes('&', argumentFormatter.format()));
         }
-
-        if (plugin.getPlayerManager().getSuffix(player.getUniqueId()).equalsIgnoreCase("")) {
-            keys.put("SUFFIX", plugin.getGroupManager().getPrefix(player.getUniqueId()));
-        } else {
-            keys.put("SUFFIX", plugin.getPlayerManager().getPrefix(player.getUniqueId()));
-        }
-
-        keys.put("MESSAGE", event.getMessage());
-
-        ArgumentFormatter argumentFormatter = new ArgumentFormatter(chatFormat, keys);
-
-        event.setFormat(ChatColor.translateAlternateColorCodes('&', argumentFormatter.format()));
     }
 }

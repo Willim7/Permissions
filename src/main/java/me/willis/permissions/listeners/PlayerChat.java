@@ -40,9 +40,9 @@ public class PlayerChat implements Listener {
             }
 
             if (plugin.getPlayerManager().getSuffix(player.getUniqueId()).equalsIgnoreCase("")) {
-                keys.put("SUFFIX", plugin.getGroupManager().getPrefix(player.getUniqueId()));
+                keys.put("SUFFIX", plugin.getGroupManager().getSuffix(player.getUniqueId()));
             } else {
-                keys.put("SUFFIX", plugin.getPlayerManager().getPrefix(player.getUniqueId()));
+                keys.put("SUFFIX", plugin.getPlayerManager().getSuffix(player.getUniqueId()));
             }
 
             keys.put("MESSAGE", event.getMessage());

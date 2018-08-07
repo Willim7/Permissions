@@ -49,7 +49,7 @@ public class PlayerChat implements Listener {
 
             ArgumentFormatter argumentFormatter = new ArgumentFormatter(chatFormat, keys);
 
-            event.setFormat(ChatColor.translateAlternateColorCodes('&', argumentFormatter.format()));
+            event.setFormat(argumentFormatter.format());
         }
     }
 }

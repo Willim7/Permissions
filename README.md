@@ -43,7 +43,7 @@ These are all the player commands. Here you can change a players group, set thei
 <br>
 
 
-These commands will output the same result as the non-shortened version. This is just a simple solution to allow for faster group & player modification (and less typing)
+These commands will output the same result as the non-shortened version. This is just a simple solution to allow for faster group & player modification (and less typing) Hope you enjoy this feature :)
 
 |Group Commands Shortened|Description|
 |-------|-----------|
@@ -54,10 +54,6 @@ These commands will output the same result as the non-shortened version. This is
 |/p g (group) s s (suffix)|Set a suffix for the selected group|
 |/p g (group) a p (permission)|Add a permission to the selected group|
 |/p g (group) r p (permission)|Remove a permission from the selected group|
-
-<br>
-
-Hope you enjoy this feature :)
 
 |Player Commands Shortened|Description|
 |---------------|-----------|

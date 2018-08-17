@@ -124,5 +124,5 @@ ChatFormat: '[${WORLD}] ${PREFIX} ${PLAYER} ${SUFFIX}: ${MESSAGE}'
 ```
 
 ### Please note
-You can use this plugin for only a single non-bungee'd server although it's true purpose is meant for bungee'd servers.
+You can use this plugin for a single non-bungee'd server although it's true purpose is meant for bungee'd servers.
 

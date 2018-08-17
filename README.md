@@ -84,7 +84,8 @@ Yes, this plugin features group syncing. When a players group is changed from a 
 
 ### Configuration
 
-```# MySQL Server Host
+```
+# MySQL Server Host
 Host: "localhost"
 
 # MySQL Server Port

@@ -1,5 +1,5 @@
 # Permissions
-Global ranks, per-server permissions, as simple as that!
+Global ranks, per-server permissions, simple and easy!
 
 ### How to use
 <br>

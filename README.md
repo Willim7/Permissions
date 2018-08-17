@@ -85,7 +85,6 @@ Global ranks, per-server permissions, simple and easy!
 <br>
 
 ### Configuration
-<br>
 
 ```# MySQL Server Host
 Host: "localhost"
@@ -125,6 +124,6 @@ UpdateTime: 5
 ChatFormat: '[${WORLD}] ${PREFIX} ${PLAYER} ${SUFFIX}: ${MESSAGE}'
 ```
 
-### Other Information
-> Please note while this plugin can run on a non-bungee'd server it's true purpose is meant for Bungee-cord, that's why the MySQL dependency is so heavy.
+### Please note
+> You can use this plugin for only a single non-bungee'd server although it's true purpose is meant for bungee'd servers.
 

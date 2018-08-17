@@ -55,6 +55,8 @@ These commands will output the same result as the non-shortened version. This is
 |/p g (group) a p (permission)|Add a permission to the selected group|
 |/p g (group) r p (permission)|Remove a permission from the selected group|
 
+<br>
+
 |Player Commands Shortened|Description|
 |---------------|-----------|
 |/p p (player) g s (group)|Change the players group|

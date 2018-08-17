@@ -1,10 +1,10 @@
 # Permissions
 Global ranks, per-server permissions, simple and easy!
 
-### How to use
+## How to use
 <br>
 
-> There is only a single permission a player needs to gain access to all commands
+There is only a single permission a player needs to gain access to all commands
 
 |Permissions|Description|
 |-----------|-----------|
@@ -12,7 +12,7 @@ Global ranks, per-server permissions, simple and easy!
 
 <br>
 
-> These are all the group commands. Here you can create & remove groups, set the groups prefix & suffix, as well as add and remove permissions.
+These are all the group commands. Here you can create & remove groups, set the groups prefix & suffix, as well as add and remove permissions.
 
 |Group Commands|Description|
 |-------|-----------|
@@ -26,7 +26,7 @@ Global ranks, per-server permissions, simple and easy!
 
 <br>
 
-> These are all the player commands. Here you can change a players group, set their prefix & suffix as well as add and remove permissions.
+These are all the player commands. Here you can change a players group, set their prefix & suffix as well as add and remove permissions.
 
 
 |Player Commands|Description|
@@ -39,11 +39,11 @@ Global ranks, per-server permissions, simple and easy!
 
 <br>
 
-### Seems like a lot of typing? Well, you'll enjoy this section!
+## Seems like a lot of typing? Well, you'll enjoy this section!
 <br>
 
 
-> These commands will output the same result as the non-shortened version. This is just a simple solution to allow for faster group & player modification (and less typing)
+These commands will output the same result as the non-shortened version. This is just a simple solution to allow for faster group & player modification (and less typing)
 
 |Group Commands Shortened|Description|
 |-------|-----------|
@@ -57,7 +57,7 @@ Global ranks, per-server permissions, simple and easy!
 
 <br>
 
-> Hope you enjoy this feature :)
+Hope you enjoy this feature :)
 
 |Player Commands Shortened|Description|
 |---------------|-----------|
@@ -69,9 +69,9 @@ Global ranks, per-server permissions, simple and easy!
 
 <br>
 
-### Prefixes & Suffixes
+## Prefixes & Suffixes
 
-> If you'd like to set a group or players prefix to nothing simply put "" as the prefix and it will set it to nothing!
+If you'd like to set a group or players prefix to nothing simply put "" as the prefix and it will set it to nothing!
 
 |Example|
 |-------|
@@ -79,8 +79,8 @@ Global ranks, per-server permissions, simple and easy!
 
 <br>
 
-### Group Syncing 
-> Yes, this plugin features group syncing. When a players group is changed from a different server (let's assume from the hub) but the player is currently playing on the survival server connected in a Bungee-cord network the plugin will see this group change and update the player's group and their permissions. Same goes for group creation and deletion. If a group is created every other server will know of this new group and simply create it on every other server running the plugin. If a group gets deleted and a player online is within the group that was deleted the player's group will change to the default group and their permissions will be changed to the default groups permission.
+## Group Syncing 
+Yes, this plugin features group syncing. When a players group is changed from a different server (let's assume from the hub) but the player is currently playing on the survival server connected in a Bungee-cord network the plugin will see this group change and update the player's group and their permissions. Same goes for group creation and deletion. If a group is created every other server will know of this new group and simply create it on every other server running the plugin. If a group gets deleted and a player online is within the group that was deleted the player's group will change to the default group and their permissions will be changed to the default groups permission.
 
 <br>
 
@@ -125,5 +125,5 @@ ChatFormat: '[${WORLD}] ${PREFIX} ${PLAYER} ${SUFFIX}: ${MESSAGE}'
 ```
 
 ### Please note
-> You can use this plugin for only a single non-bungee'd server although it's true purpose is meant for bungee'd servers.
+You can use this plugin for only a single non-bungee'd server although it's true purpose is meant for bungee'd servers.
 

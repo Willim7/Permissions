@@ -82,6 +82,7 @@ Global ranks, per-server permissions, simple and easy!
 ### Group Syncing 
 > Yes, this plugin features group syncing. When a players group is changed from a different server (let's assume from the hub) but the player is currently playing on the survival server connected in a Bungee-cord network the plugin will see this group change and update the player's group and their permissions. Same goes for group creation and deletion. If a group is created every other server will know of this new group and simply create it on every other server running the plugin. If a group gets deleted and a player online is within the group that was deleted the player's group will change to the default group and their permissions will be changed to the default groups permission.
 
+<br>
 
 ### Configuration
 <br>

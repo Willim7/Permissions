@@ -39,8 +39,6 @@ Global ranks, per-server permissions, simple and easy!
 
 <br>
 
-
-
 ### Seems like a lot of typing? Well, you'll enjoy this section!
 <br>
 
@@ -70,6 +68,17 @@ Global ranks, per-server permissions, simple and easy!
 |/p p (player) r p (permissions)|Remove a permission from the player|
 
 <br>
+
+### Prefixes & Suffixes
+
+> If you'd like to set a group or players prefix to nothing simply put "" as the prefix and it will set it to nothing!
+
+|Example|
+|-------|
+|/p group (group) set prefix ""|
+
+<br>
+
 
 ### Configuration
 <br>

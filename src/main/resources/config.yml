@@ -31,7 +31,7 @@ DefaultGroup: "member"
 # This time is measure in SECONDS! This time is how often the plugin will sync groups.
 # For example, if a group was deleted on your hub server then the rest of the servers connected to the
 # same database will realize this group deletion and delete the same group that was deleted on the hub.
-UpdateTime: 60
+UpdateTime: 5
 
 # This is the chat format available to you! Here you can customize the output of in-game
 # chat to make it suit your style. (Colour Codes are supported)

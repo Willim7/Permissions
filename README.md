@@ -82,6 +82,7 @@ You can now add & remove multiple permissions from players & groups at once! You
 |/p payer (player) remove perm permission1,permission2,permission3 etc...|
 
 |Negative Permission Values|
+|--------------------------|
 |/p group (group) add perm -permission1|
 |/p player (player) add perm -permission1|
 

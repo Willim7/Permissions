@@ -17,6 +17,7 @@ These are all the group commands. Here you can create & remove groups, set the g
 |Group Commands|Description|
 |-------|-----------|
 |/p groups|Shows all created groups|
+|/p group view (group)|Show information about specificed group|
 |/p group create (group)|Create a new group|
 |/p group delete (group)|Delete the selected group|
 |/p group (group) set prefix (prefix)|Set a prefix for the selected group|
@@ -31,6 +32,7 @@ These are all the player commands. Here you can change a players group, set thei
 
 |Player Commands|Description|
 |---------------|-----------|
+|/p player view (player)|Show information about specificed player|
 |/p player (player) group set (group)|Change the players group|
 |/p player (player) set prefix (prefix)|Set a player prefix|
 |/p player (player) set suffix (suffix)|Set a player suffix|
@@ -48,6 +50,7 @@ These commands will output the same result as the non-shortened version. This is
 |Group Commands Shortened|Description|
 |-------|-----------|
 |/p gs|Shows all created groups|
+|/p g v (group)|Show information about specificed group|
 |/p g c (group)|Create a new group|
 |/p g d (group)|Delete the selected group|
 |/p g (group) s p (prefix)|Set a prefix for the selected group|
@@ -59,6 +62,7 @@ These commands will output the same result as the non-shortened version. This is
 
 |Player Commands Shortened|Description|
 |---------------|-----------|
+|/p p v (group)|Show information about specificed player|
 |/p p (player) g s (group)|Change the players group|
 |/p p (player) s p (prefix)|Set a player prefix|
 |/p p (player) s s (suffix)|Set a player suffix|
@@ -66,6 +70,20 @@ These commands will output the same result as the non-shortened version. This is
 |/p p (player) r p (permissions)|Remove a permission from the player|
 
 <br>
+
+## Multiple permissions + Negative Permission values
+You can now add & remove multiple permissions from players & groups at once! You can also define a negative permission value which will result in the player or group not gaining access to a certain command.
+
+|Multiple Permission Values|
+|--------|
+|/p group (group) add perm permission1,permission2,permission3 etc...|
+|/p group (group) remove perm permission1,permission2,permission3 etc...|
+|/p player (player) add perm permission1,permission2,permission3 etc...|
+|/p payer (player) remove perm permission1,permission2,permission3 etc...|
+
+|Negative Permission Values|
+|/p group (group) add perm -permission1|
+|/p player (player) add perm -permission1|
 
 ## Prefixes & Suffixes
 

@@ -88,6 +88,8 @@ You can now add & remove multiple permissions from players & groups at once! You
 |/p group (group) add perm -permission1|
 |/p player (player) add perm -permission1|
 
+<br>
+
 ## Prefixes & Suffixes
 
 If you'd like to set a group or players prefix to nothing simply put "" as the prefix and it will set it to nothing!

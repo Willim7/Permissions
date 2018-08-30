@@ -1,8 +1,6 @@
 package me.willis.permissions.command;
 
 import me.willis.permissions.Permissions;
-import me.willis.permissions.util.GroupManager;
-import me.willis.permissions.util.PlayerManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -10,16 +8,15 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.Iterator;
+import java.util.List;
+
 public class Command implements CommandExecutor {
 
     private Permissions plugin;
-    private GroupManager groupManager;
-    private PlayerManager playerManager;
 
     public Command(Permissions plugin) {
         this.plugin = plugin;
-        this.groupManager = new GroupManager(plugin);
-        this.playerManager = new PlayerManager(plugin);
     }
 
     public boolean onCommand(CommandSender sender, org.bukkit.command.Command command, String label, String[] args) {
@@ -28,6 +25,7 @@ public class Command implements CommandExecutor {
 
                 sender.sendMessage(ChatColor.YELLOW + "Group Commands:");
                 sender.sendMessage(ChatColor.YELLOW + "  -> p groups");
+                sender.sendMessage(ChatColor.YELLOW + "  -> p group view (group)");
                 sender.sendMessage(ChatColor.YELLOW + "  -> p group create (group)");
                 sender.sendMessage(ChatColor.YELLOW + "  -> p group delete (group)");
                 sender.sendMessage(ChatColor.YELLOW + "  -> p group (group) set prefix (prefix)");
@@ -36,6 +34,7 @@ public class Command implements CommandExecutor {
                 sender.sendMessage(ChatColor.YELLOW + "  -> p group (group) remove perm (permission)");
                 sender.sendMessage("");
                 sender.sendMessage(ChatColor.YELLOW + "Player Commands:");
+                sender.sendMessage(ChatColor.YELLOW + "  -> p player view (player)");
                 sender.sendMessage(ChatColor.YELLOW + "  -> p player (player) group set (group)");
                 sender.sendMessage(ChatColor.YELLOW + "  -> p player (player) set prefix (prefix)");
                 sender.sendMessage(ChatColor.YELLOW + "  -> p player (player) set suffix (suffix)");
@@ -46,7 +45,18 @@ public class Command implements CommandExecutor {
 
             if (args.length == 1) {
                 if (args[0].equalsIgnoreCase("groups") || (args[0].equalsIgnoreCase("gs"))) {
-                    groupManager.getGroups(sender);
+
+                    String message = ChatColor.YELLOW + "Groups: ";
+
+                    for (Iterator iterator = plugin.getPermissionsAPI().getGroupManager().getGroups().iterator(); iterator.hasNext(); ) {
+
+                        String groups = (String) iterator.next();
+
+                        message = message + groups + ", ";
+                    }
+
+                    sender.sendMessage(message);
+
                     return true;
                 }
             }
@@ -54,44 +64,56 @@ public class Command implements CommandExecutor {
             if (args[0].equalsIgnoreCase("group") || (args[0].equalsIgnoreCase("g"))) {
                 if (args.length == 3) {
 
-                    if (args[1].equalsIgnoreCase("create") || (args[1].equalsIgnoreCase("c"))) {
+                    if (args[1].equalsIgnoreCase("view") || (args[1].equalsIgnoreCase("v"))) {
 
-                        if (groupManager.isGroupCreated(args[2])) {
-                            sender.sendMessage(ChatColor.RED + "Error:");
-                            sender.sendMessage(ChatColor.RED + "  -> The group has already been created");
+                        if (!plugin.getPermissionsAPI().getGroupManager().isGroupCreated(args[2])) {
+                            sender.sendMessage(ChatColor.RED + "[!] The group doesn't exist");
                             return true;
                         }
 
-                        groupManager.createGroup(args[2]);
+                        sender.sendMessage(ChatColor.YELLOW + "Group View:");
+                        sender.sendMessage(ChatColor.YELLOW + "  Name: " + args[2]);
+                        sender.sendMessage(ChatColor.YELLOW + "  Prefix: " + plugin.getPermissionsAPI().getGroupManager().getPrefix(args[2]));
+                        sender.sendMessage(ChatColor.YELLOW + "  Suffix: " + plugin.getPermissionsAPI().getGroupManager().getSuffix(args[2]));
+                        sender.sendMessage(ChatColor.YELLOW + "  Permissions:");
 
-                        sender.sendMessage(ChatColor.GREEN + "Success:");
-                        sender.sendMessage(ChatColor.GREEN + "  -> Group has been created");
+                        List<String> permissions = plugin.getPermissionsAPI().getGroupManager().getPermissions(args[2]);
+
+                        for (int i = 0; i < permissions.size(); i++) {
+                            sender.sendMessage(ChatColor.YELLOW + "    - " + permissions.get(i));
+                        }
+                    } else if (args[1].equalsIgnoreCase("create") || (args[1].equalsIgnoreCase("c"))) {
+
+                        if (plugin.getPermissionsAPI().getGroupManager().isGroupCreated(args[2])) {
+                            sender.sendMessage(ChatColor.RED + "[!] The group has already been created");
+                            return true;
+                        }
+
+                        plugin.getPermissionsAPI().getGroupManager().createGroup(args[2]);
+
+                        sender.sendMessage(ChatColor.GREEN + "[!] Group has been created");
 
                     } else if (args[1].equalsIgnoreCase("delete") || (args[1].equalsIgnoreCase("d"))) {
 
-                        if (groupManager.getDefaultGroup().equalsIgnoreCase(args[2].toLowerCase())) {
-                            sender.sendMessage(ChatColor.RED + "Error:");
-                            sender.sendMessage(ChatColor.RED + "  -> You can't delete the default group");
+                        if (plugin.getPermissionsAPI().getGroupManager().getDefaultGroup().equalsIgnoreCase(args[2].toLowerCase())) {
+                            sender.sendMessage(ChatColor.RED + "[!] You can't delete the default group");
                             return false;
                         }
 
-                        if (!groupManager.isGroupCreated(args[2])) {
-                            sender.sendMessage(ChatColor.RED + "Error:");
-                            sender.sendMessage(ChatColor.RED + "  -> The group has yet to be created");
+                        if (!plugin.getPermissionsAPI().getGroupManager().isGroupCreated(args[2])) {
+                            sender.sendMessage(ChatColor.RED + "[!] The group has yet to be created");
                             return true;
                         }
 
-                        groupManager.deleteGroup(args[2]);
+                        plugin.getPermissionsAPI().getGroupManager().deleteGroup(args[2]);
 
-                        sender.sendMessage(ChatColor.GREEN + "Success:");
-                        sender.sendMessage(ChatColor.GREEN + "  -> Group has been deleted");
+                        sender.sendMessage(ChatColor.GREEN + "[!] Group has been deleted");
                     }
 
                 } else if (args.length == 5) {
 
-                    if (!groupManager.isGroupCreated(args[1])) {
-                        sender.sendMessage(ChatColor.RED + "Error:");
-                        sender.sendMessage(ChatColor.RED + "  -> The group doesn't exist");
+                    if (!plugin.getPermissionsAPI().getGroupManager().isGroupCreated(args[1])) {
+                        sender.sendMessage(ChatColor.RED + "[!] The group doesn't exist");
                         return true;
                     }
 
@@ -101,63 +123,104 @@ public class Command implements CommandExecutor {
 
                             if (args[4].equalsIgnoreCase("\"\"")) {
 
-                                groupManager.setPrefix(args[1], "");
+                                plugin.getPermissionsAPI().getGroupManager().setGroupPrefix(args[1], "");
 
                             } else {
 
-                                groupManager.setPrefix(args[1], args[4]);
+                                plugin.getPermissionsAPI().getGroupManager().setGroupPrefix(args[1], args[4]);
                             }
 
-                            sender.sendMessage(ChatColor.GREEN + "Success:");
-                            sender.sendMessage(ChatColor.GREEN + "  -> Group prefix has been changed");
+                            sender.sendMessage(ChatColor.GREEN + "[!] Group prefix has been changed");
 
                         } else if (args[3].equalsIgnoreCase("suffix") || (args[3].equalsIgnoreCase("s"))) {
 
                             if (args[4].equalsIgnoreCase("\"\"")) {
 
-                                groupManager.setSuffix(args[1], "");
+                                plugin.getPermissionsAPI().getGroupManager().setGroupSuffix(args[1], "");
 
                             } else {
 
-                                groupManager.setSuffix(args[1], args[4]);
+                                plugin.getPermissionsAPI().getGroupManager().setGroupSuffix(args[1], args[4]);
                             }
 
-                            sender.sendMessage(ChatColor.GREEN + "Success:");
-                            sender.sendMessage(ChatColor.GREEN + "  -> Group suffix has been changed");
+                            sender.sendMessage(ChatColor.GREEN + "[!] Group suffix has been changed");
                         }
                     } else if (args[2].equalsIgnoreCase("add") || (args[2].equalsIgnoreCase("a"))) {
 
                         if (args[3].equalsIgnoreCase("perm") || (args[3].equalsIgnoreCase("p"))) {
 
-                            groupManager.addPermission(args[1], args[4]);
+                            plugin.getPermissionsAPI().getGroupManager().addPermission(args[1], args[4]);
 
-                            sender.sendMessage(ChatColor.GREEN + "Success:");
-                            sender.sendMessage(ChatColor.GREEN + "  -> Group permission has been added");
+                            sender.sendMessage(ChatColor.GREEN + "[!] Group permission has been added");
 
                         }
                     } else if (args[2].equalsIgnoreCase("remove") || (args[2].equalsIgnoreCase("r"))) {
 
                         if (args[3].equalsIgnoreCase("perm") || (args[3].equalsIgnoreCase("p"))) {
 
-                            groupManager.removePermission(args[1], args[4]);
+                            plugin.getPermissionsAPI().getGroupManager().removePermission(args[1], args[4]);
 
-                            sender.sendMessage(ChatColor.GREEN + "Success:");
-                            sender.sendMessage(ChatColor.GREEN + "  -> Group permission has been removed");
+                            sender.sendMessage(ChatColor.GREEN + "[!] Group permission has been removed");
 
                         }
                     }
                 }
             } else if (args[0].equalsIgnoreCase("player") || (args[0].equalsIgnoreCase("p"))) {
 
-                if (args.length == 5) {
+                if (args.length == 3) {
+                    if (args[1].equalsIgnoreCase("view") || (args[1].equalsIgnoreCase("v"))) {
+
+                        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(args[2]);
+
+                        if (offlinePlayer.isOnline()) {
+
+                            Player player = Bukkit.getPlayer(args[2]);
+
+                            if (plugin.getPermissionsAPI().getPlayerManager().hasAccount(player.getUniqueId())) {
+
+                                sender.sendMessage(ChatColor.YELLOW + "Player View:");
+                                sender.sendMessage(ChatColor.YELLOW + "  Name: " + player.getName());
+                                sender.sendMessage(ChatColor.YELLOW + "  Prefix: " + plugin.getPermissionsAPI().getPlayerManager().getPlayerPrefix(player.getUniqueId()));
+                                sender.sendMessage(ChatColor.YELLOW + "  Suffix: " + plugin.getPermissionsAPI().getPlayerManager().getPlayerSuffix(player.getUniqueId()));
+                                sender.sendMessage(ChatColor.YELLOW + "  Permissions:");
+
+                                List<String> permissions = plugin.getPermissionsAPI().getPlayerManager().getPermissions(player.getUniqueId());
+
+                                for (int i = 0; i < permissions.size(); i++) {
+                                    sender.sendMessage(ChatColor.YELLOW + "    - " + permissions.get(i));
+                                }
+                            }
+                        } else {
+
+                            if (!offlinePlayer.hasPlayedBefore()) {
+                                sender.sendMessage(ChatColor.RED + "[!] Player has never joined this server");
+                                return true;
+                            }
+
+                            if (plugin.getPermissionsAPI().getPlayerManager().hasAccount(offlinePlayer.getUniqueId())) {
+
+                                sender.sendMessage(ChatColor.YELLOW + "Player View:");
+                                sender.sendMessage(ChatColor.YELLOW + "  Name: " + offlinePlayer.getName());
+                                sender.sendMessage(ChatColor.YELLOW + "  Prefix: " + plugin.getPermissionsAPI().getPlayerManager().getPlayerPrefix(offlinePlayer.getUniqueId()));
+                                sender.sendMessage(ChatColor.YELLOW + "  Suffix: " + plugin.getPermissionsAPI().getPlayerManager().getPlayerSuffix(offlinePlayer.getUniqueId()));
+                                sender.sendMessage(ChatColor.YELLOW + "  Permissions:");
+
+                                List<String> permissions = plugin.getPermissionsAPI().getPlayerManager().getPermissions(offlinePlayer.getUniqueId());
+
+                                for (int i = 0; i < permissions.size(); i++) {
+                                    sender.sendMessage(ChatColor.YELLOW + "    - " + permissions.get(i));
+                                }
+                            }
+                        }
+                    }
+                } else if (args.length == 5) {
 
                     if (args[2].equalsIgnoreCase("group") || (args[2].equalsIgnoreCase("g"))) {
 
                         if (args[3].equalsIgnoreCase("set") || (args[3].equalsIgnoreCase("s"))) {
 
-                            if (!groupManager.isGroupCreated(args[4])) {
-                                sender.sendMessage(ChatColor.RED + "Error:");
-                                sender.sendMessage(ChatColor.RED + "  -> The group doesn't exist");
+                            if (!plugin.getPermissionsAPI().getGroupManager().isGroupCreated(args[4])) {
+                                sender.sendMessage(ChatColor.RED + "[!] The group doesn't exist");
                                 return true;
                             }
 
@@ -167,23 +230,20 @@ public class Command implements CommandExecutor {
 
                                 Player player = Bukkit.getServer().getPlayer(args[1]);
 
-                                groupManager.setPlayerGroup(args[4], player);
+                                plugin.getPermissionsAPI().getGroupManager().setPlayerGroup(args[4], player);
 
-                                sender.sendMessage(ChatColor.GREEN + "Success:");
-                                sender.sendMessage(ChatColor.GREEN + "  -> Player group has been changed");
+                                sender.sendMessage(ChatColor.GREEN + "[!] Player group has been changed");
 
                             } else {
 
                                 if (!offlinePlayer.hasPlayedBefore()) {
-                                    sender.sendMessage(ChatColor.RED + "Error:");
-                                    sender.sendMessage(ChatColor.RED + "  -> Player has never joined this server");
+                                    sender.sendMessage(ChatColor.RED + "[!] Player has never joined this server");
                                     return true;
                                 }
 
-                                groupManager.setPlayerGroup(args[4], offlinePlayer);
+                                plugin.getPermissionsAPI().getGroupManager().setPlayerGroup(args[4], offlinePlayer);
 
-                                sender.sendMessage(ChatColor.GREEN + "Success:");
-                                sender.sendMessage(ChatColor.GREEN + "  -> Player group has been changed");
+                                sender.sendMessage(ChatColor.GREEN + "[!] Player group has been changed");
                             }
                         }
                     } else if (args[2].equalsIgnoreCase("set") || (args[2].equalsIgnoreCase("s"))) {
@@ -198,35 +258,32 @@ public class Command implements CommandExecutor {
 
                                 if (args[4].equalsIgnoreCase("\"\"")) {
 
-                                    playerManager.setPrefix(player.getUniqueId(), "");
+                                    plugin.getPermissionsAPI().getPlayerManager().setPlayerPrefix(player.getUniqueId(), "");
 
                                 } else {
 
                                     if (!offlinePlayer.hasPlayedBefore()) {
-                                        sender.sendMessage(ChatColor.RED + "Error:");
-                                        sender.sendMessage(ChatColor.RED + "  -> Player has never joined this server");
+                                        sender.sendMessage(ChatColor.RED + "[!] Player has never joined this server");
                                         return true;
                                     }
 
-                                    playerManager.setPrefix(player.getUniqueId(), args[4]);
+                                    plugin.getPermissionsAPI().getPlayerManager().setPlayerPrefix(player.getUniqueId(), args[4]);
                                 }
 
-                                sender.sendMessage(ChatColor.GREEN + "Success:");
-                                sender.sendMessage(ChatColor.GREEN + "  -> Player prefix has been changed");
+                                sender.sendMessage(ChatColor.GREEN + "[!] Player prefix has been changed");
 
                             } else {
 
                                 if (args[4].equalsIgnoreCase("\"\"")) {
 
-                                    playerManager.setPrefix(offlinePlayer.getUniqueId(), "");
+                                    plugin.getPermissionsAPI().getPlayerManager().setPlayerPrefix(offlinePlayer.getUniqueId(), "");
 
                                 } else {
 
-                                    playerManager.setPrefix(offlinePlayer.getUniqueId(), args[4]);
+                                    plugin.getPermissionsAPI().getPlayerManager().setPlayerPrefix(offlinePlayer.getUniqueId(), args[4]);
                                 }
 
-                                sender.sendMessage(ChatColor.GREEN + "Success:");
-                                sender.sendMessage(ChatColor.GREEN + "  -> Player prefix has been changed");
+                                sender.sendMessage(ChatColor.GREEN + "[!] Player prefix has been changed");
                             }
                         } else if (args[3].equalsIgnoreCase("suffix") || (args[3].equalsIgnoreCase("s"))) {
 
@@ -238,35 +295,32 @@ public class Command implements CommandExecutor {
 
                                 if (args[4].equalsIgnoreCase("\"\"")) {
 
-                                    playerManager.setSuffix(player.getUniqueId(), "");
+                                    plugin.getPermissionsAPI().getPlayerManager().setPlayerSuffix(player.getUniqueId(), "");
 
                                 } else {
 
                                     if (!offlinePlayer.hasPlayedBefore()) {
-                                        sender.sendMessage(ChatColor.RED + "Error:");
-                                        sender.sendMessage(ChatColor.RED + "  -> Player has never joined this server");
+                                        sender.sendMessage(ChatColor.RED + " [!] Player has never joined this server");
                                         return true;
                                     }
 
-                                    playerManager.setSuffix(player.getUniqueId(), args[4]);
+                                    plugin.getPermissionsAPI().getPlayerManager().setPlayerSuffix(player.getUniqueId(), args[4]);
                                 }
 
-                                sender.sendMessage(ChatColor.GREEN + "Success:");
-                                sender.sendMessage(ChatColor.GREEN + "  -> Player suffix has been changed");
+                                sender.sendMessage(ChatColor.GREEN + "[!] Player suffix has been changed");
 
                             } else {
 
                                 if (args[4].equalsIgnoreCase("\"\"")) {
 
-                                    playerManager.setSuffix(offlinePlayer.getUniqueId(), "");
+                                    plugin.getPermissionsAPI().getPlayerManager().setPlayerSuffix(offlinePlayer.getUniqueId(), "");
 
                                 } else {
 
-                                    playerManager.setSuffix(offlinePlayer.getUniqueId(), args[4]);
+                                    plugin.getPermissionsAPI().getPlayerManager().setPlayerSuffix(offlinePlayer.getUniqueId(), args[4]);
                                 }
 
-                                sender.sendMessage(ChatColor.GREEN + "Success:");
-                                sender.sendMessage(ChatColor.GREEN + "  -> Player suffix has been changed");
+                                sender.sendMessage(ChatColor.GREEN + "[!] Player suffix has been changed");
                             }
                         }
                     } else if (args[2].equalsIgnoreCase("add") || args[2].equalsIgnoreCase("a")) {
@@ -279,23 +333,20 @@ public class Command implements CommandExecutor {
 
                                 Player player = Bukkit.getServer().getPlayer(args[1]);
 
-                                playerManager.addPermission(player, args[4]);
+                                plugin.getPermissionsAPI().getPlayerManager().addPlayerPermission(player, args[4]);
 
-                                sender.sendMessage(ChatColor.GREEN + "Success:");
-                                sender.sendMessage(ChatColor.GREEN + "  -> Player permission has been added");
+                                sender.sendMessage(ChatColor.GREEN + "[!] Player permission has been added");
 
                             } else {
 
                                 if (!offlinePlayer.hasPlayedBefore()) {
-                                    sender.sendMessage(ChatColor.RED + "Error:");
-                                    sender.sendMessage(ChatColor.RED + "  -> Player has never joined this server");
+                                    sender.sendMessage(ChatColor.RED + "[!] Player has never joined this server");
                                     return true;
                                 }
 
-                                playerManager.addPermission(offlinePlayer, args[4]);
+                                plugin.getPermissionsAPI().getPlayerManager().addPlayerPermission(offlinePlayer, args[4]);
 
-                                sender.sendMessage(ChatColor.GREEN + "Success:");
-                                sender.sendMessage(ChatColor.GREEN + "  -> Player permission has been added");
+                                sender.sendMessage(ChatColor.GREEN + "[!] Player permission has been added");
                             }
                         }
                     } else if (args[2].equalsIgnoreCase("remove") || args[2].equalsIgnoreCase("r")) {
@@ -308,31 +359,28 @@ public class Command implements CommandExecutor {
 
                                 Player player = Bukkit.getServer().getPlayer(args[1]);
 
-                                playerManager.removePermission(player, args[4]);
+                                plugin.getPermissionsAPI().getPlayerManager().removePlayerPermission(player, args[4]);
 
-                                sender.sendMessage(ChatColor.GREEN + "Success:");
-                                sender.sendMessage(ChatColor.GREEN + "  -> Player permission has been removed");
+                                sender.sendMessage(ChatColor.GREEN + "[!] Player permission has been removed");
 
                             } else {
 
                                 if (!offlinePlayer.hasPlayedBefore()) {
-                                    sender.sendMessage(ChatColor.RED + "Error:");
-                                    sender.sendMessage(ChatColor.RED + "  -> Player has never joined this server");
+                                    sender.sendMessage(ChatColor.RED + "[!] Player has never joined this server");
                                     return true;
                                 }
 
-                                playerManager.removePermission(offlinePlayer, args[4]);
+                                plugin.getPermissionsAPI().getPlayerManager().removePlayerPermission(offlinePlayer, args[4]);
 
-                                sender.sendMessage(ChatColor.GREEN + "Success:");
-                                sender.sendMessage(ChatColor.GREEN + "  -> Player permission has been removed");
+                                sender.sendMessage(ChatColor.GREEN + "[!] Player permission has been removed");
                             }
                         }
                     }
                 }
             }
         } else {
-            sender.sendMessage(ChatColor.RED + "You may not execute this command.");
+            sender.sendMessage(ChatColor.RED + "[!] You may not execute this command.");
         }
-        return false;
+        return true;
     }
 }

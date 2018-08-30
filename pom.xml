@@ -13,10 +13,6 @@
             <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
-        <repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
-        </repository>
     </repositories>
     <dependencies>
         <!--Spigot API-->
@@ -32,11 +28,6 @@
             <artifactId>bukkit</artifactId>
             <version>1.12.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.github.JustRayz</groupId>
-            <artifactId>rlib</artifactId>
-            <version>1.0.2</version>
         </dependency>
     </dependencies>
 </project>

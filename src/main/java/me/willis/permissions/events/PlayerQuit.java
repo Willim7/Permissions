@@ -1,4 +1,4 @@
-package me.willis.permissions.listeners;
+package me.willis.permissions.events;
 
 import me.willis.permissions.Permissions;
 import org.bukkit.entity.Player;
@@ -20,13 +20,13 @@ public class PlayerQuit implements Listener {
         Player player = event.getPlayer();
 
         //Group
-        plugin.getGroupManager().removeGroupPermissions(player);
+        plugin.getPermissionsAPI().getGroupManager().unApplyGroupPermissions(player);
 
         //Player
-        plugin.getPlayerManager().removePlayerPermissions(player);
+        plugin.getPermissionsAPI().getPlayerManager().unApplyPlayerPermissions(player);
 
-        //Attachment/Group
-        plugin.getGroup().remove(player.getUniqueId());
-        plugin.getAttachment().remove(player.getUniqueId());
+        //Maps
+        plugin.getPermissionsAPI().getPlayerGroups().remove(player.getUniqueId());
+        plugin.getPermissionsAPI().getAttachment().remove(player.getUniqueId());
     }
 }

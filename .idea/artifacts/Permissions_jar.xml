@@ -3,7 +3,7 @@
     <output-path>$USER_HOME$/Desktop</output-path>
     <root id="archive" name="Permissions.jar">
       <element id="module-output" name="Permissions" />
-      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/github/JustRayz/rlib/1.0.1/rlib-1.0.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/Desktop/PermissionsAPI.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>

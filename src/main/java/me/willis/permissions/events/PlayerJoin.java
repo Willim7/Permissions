@@ -1,11 +1,11 @@
 package me.willis.permissions.events;
 
 import me.willis.permissions.Permissions;
-import me.willis.permissionsAPI.PermissionsAPI;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class PlayerJoin implements Listener {
 
@@ -30,11 +30,19 @@ public class PlayerJoin implements Listener {
             }
 
             plugin.getPermissionsAPI().getPlayerGroups().put(player.getUniqueId(), s.toLowerCase());
-            plugin.getPermissionsAPI().getGroupManager().applyGroupPermissions(player); });
+        });
+
+        plugin.getPermissionsAPI().getGroupManager().applyGroupPermissions(player);
 
 
         //Player
         plugin.getPermissionsAPI().getPlayerManager().createAccount(player.getUniqueId());
-        plugin.getPermissionsAPI().getPlayerManager().applyPlayerPermissions(player);
+
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                plugin.getPermissionsAPI().getPlayerManager().applyPlayerPermissions(player);
+            }
+        }.runTaskLater(plugin, 2L);
     }
 }

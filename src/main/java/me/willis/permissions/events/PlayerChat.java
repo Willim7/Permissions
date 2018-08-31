@@ -2,7 +2,6 @@ package me.willis.permissions.events;
 
 import me.willis.permissions.Permissions;
 import me.willis.permissions.util.ArgumentFormatter;
-import me.willis.permissionsAPI.PermissionsAPI;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;

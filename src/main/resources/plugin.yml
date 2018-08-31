@@ -1,5 +1,5 @@
 name: Permissions
-version: 1.1.0
+version: 1.1.1
 description: Allow global ranks when using BungeeCord but keep permissions, prefixes, and suffixes per-server only!
 
 author: Willis

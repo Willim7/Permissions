@@ -19,11 +19,8 @@ public class PlayerQuit implements Listener {
 
         Player player = event.getPlayer();
 
-        //Group
-        plugin.getPermissionsAPI().getGroupManager().unApplyGroupPermissions(player);
-
-        //Player
-        plugin.getPermissionsAPI().getPlayerManager().unApplyPlayerPermissions(player);
+        //Permissions
+        plugin.getPermissionsAPI().getPermissionsManager().unApplyPermissions(player);
 
         //Maps
         plugin.getPermissionsAPI().getPlayerGroups().remove(player.getUniqueId());

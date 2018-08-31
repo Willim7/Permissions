@@ -27,15 +27,8 @@ public class Permissions extends JavaPlugin implements Listener {
         Bukkit.getOnlinePlayers().forEach(player -> {
             permissionsAPI.getSql().getGroup(player.getUniqueId()).thenAccept(s -> {
                 permissionsAPI.getPlayerGroups().put(player.getUniqueId(), s.toLowerCase());
-                permissionsAPI.getGroupManager().applyGroupPermissions(player);
+                permissionsAPI.getPermissionsManager().applyPermissions(player);
             });
-
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    permissionsAPI.getPlayerManager().applyPlayerPermissions(player);
-                }
-            }.runTaskLater(this, 2L);
         });
 
         new BukkitRunnable() {
